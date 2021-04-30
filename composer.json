@@ -7,7 +7,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "ssh://git@github.com/Shopify/shopify-php-api.git"
+            "url": "https://github.com/Shopify/shopify-php-api.git"
         }
     ],
     "require": {
