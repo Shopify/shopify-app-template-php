@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\DbSessionStorage;
+use App\Lib\DbSessionStorage;
 use Illuminate\Support\ServiceProvider;
 use Shopify\Context;
 

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Shopify\Auth\AccessTokenOnlineUserInfo;
 use Shopify\Auth\Session;
 use Shopify\Context;
 use Tests\TestCase;
 
 
-class SessionStorageTest extends TestCase
+class DBSessionStorageTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,7 +24,7 @@ class SessionStorageTest extends TestCase
         $this->session = new Session(
             self::TEST_SESSION_ID,
             "test-shop.myshopify.io",
-            true,
+            false,
             "test-session-state"
         );
     }
@@ -35,6 +36,14 @@ class SessionStorageTest extends TestCase
 
     public function testLoadSessionReturnSessionIfItExists()
     {
+        $this->session->setScope('read_products,write_products');
+        $this->session->setExpires(strtotime('+1 day'));
+        $this->session->setAccessToken('totally_real_access_token');
+        $this->session->setOnlineAccessInfo(
+            new AccessTokenOnlineUserInfo(
+                1, "firstname", "lastname", "email@host.com", true, true, "en-ca", false
+            )
+        );
         Context::$SESSION_STORAGE->storeSession($this->session);
         $this->assertEquals(
             $this->session,
@@ -42,12 +51,29 @@ class SessionStorageTest extends TestCase
         );
     }
 
-    public function testStoreSessionReturnFalseIfOperationFails()
+    public function testLoadSessionReturnSessionIfItExistsWhenOptionalFieldsAreNotSet()
+    {
+        Context::$SESSION_STORAGE->storeSession($this->session);
+        $this->assertEquals(
+            $this->session,
+            Context::$SESSION_STORAGE->loadSession(self::TEST_SESSION_ID)
+        );
+    }
+
+    public function testLoadSessionReturnSessionWithoutOptionalFields()
+    {
+        Context::$SESSION_STORAGE->storeSession($this->session);
+        $this->assertEquals(
+            $this->session,
+            Context::$SESSION_STORAGE->loadSession(self::TEST_SESSION_ID)
+        );
+    }
+
+    public function testStoreShouldUpdateSession()
     {
         Context::$SESSION_STORAGE->storeSession($this->session);
 
-        // The second store will fail because session_id should be unique
-        $this->assertFalse(Context::$SESSION_STORAGE->storeSession($this->session));
+        $this->assertTrue(Context::$SESSION_STORAGE->storeSession($this->session));
     }
 
     public function testStoreSessionReturnTrueIfOperationSucceeds()
