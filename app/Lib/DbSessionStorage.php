@@ -8,6 +8,7 @@ use Exception;
 use Shopify\Auth\AccessTokenOnlineUserInfo;
 use Shopify\Auth\Session;
 use Shopify\Auth\SessionStorage;
+use Illuminate\Support\Facades\Log;
 
 class DbSessionStorage implements SessionStorage
 {
@@ -75,7 +76,8 @@ class DbSessionStorage implements SessionStorage
         }
         try {
             return $dbSession->save();
-        } catch (Exception) {
+        } catch (Exception $err) {
+            Log::error("Failed to save session to database: " . $err->getMessage());
             return false;
         }
     }

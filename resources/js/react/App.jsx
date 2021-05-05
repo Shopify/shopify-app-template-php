@@ -6,10 +6,11 @@ import {ApolloClient, gql, HttpLink, InMemoryCache} from '@apollo/client';
 
 const TEST_QUERY = gql`query { shop {name} }`;
 
-function App({host, apiKey}) {
+function App({shop, host, apiKey}) {
     const app = createApp({
+        shop: shop,
+        host: host,
         apiKey: apiKey,
-        host: host
     });
 
     const client = new ApolloClient({
