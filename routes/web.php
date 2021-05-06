@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Session;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Shopify\Auth\OAuth;
@@ -15,8 +16,13 @@ use Shopify\Auth\OAuth;
 |
 */
 
-Route::get('/', function () {
-    return "Hello World!";
+Route::get('/', function (Request $request) {
+    $shop = $request->query('shop');
+    $appInstalled = Session::where('shop', $shop)->exists();
+    if($appInstalled){
+        return view('unauthenticated');
+    }
+    return redirect("/login?shop=$shop");
 });
 
 Route::get('/auth/callback', function (Request $request) {
