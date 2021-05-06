@@ -10,9 +10,15 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@babel/preset-react": "^7.13.13",
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
+    },
+    "dependencies": {
+        "@shopify/app-bridge": "^1.30.0",
+        "@shopify/app-bridge-utils": "^1.30.0",
+        "react-dom": "^17.0.2"
     }
 }

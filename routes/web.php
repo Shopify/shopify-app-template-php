@@ -3,6 +3,8 @@
 use App\Models\Session;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Shopify\Context;
+use Illuminate\Http\Request;
 use Shopify\Auth\OAuth;
 
 /*
@@ -20,7 +22,10 @@ Route::get('/', function (Request $request) {
     $shop = $request->query('shop');
     $appInstalled = Session::where('shop', $shop)->exists();
     if($appInstalled){
-        return view('react');
+        return view('react', [
+            'shop' => $shop,
+            'apiKey' => Context::$API_KEY
+        ]);
     }
     return redirect("/login?shop=$shop");
 });
