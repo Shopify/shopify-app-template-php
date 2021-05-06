@@ -20,7 +20,7 @@ Route::get('/', function (Request $request) {
     $shop = $request->query('shop');
     $appInstalled = Session::where('shop', $shop)->exists();
     if($appInstalled){
-        return view('unauthenticated');
+        return view('react');
     }
     return redirect("/login?shop=$shop");
 });

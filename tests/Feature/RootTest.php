@@ -31,7 +31,7 @@ class RootTest extends TestCase
 
         $response = $this->get("?shop=test-shop.myshopify.io");
         $response->assertStatus(200);
-        $response->assertViewIs('unauthenticated');
+        $response->assertViewIs('react');
     }
 
 }
