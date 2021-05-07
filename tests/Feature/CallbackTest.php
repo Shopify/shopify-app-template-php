@@ -6,15 +6,11 @@ namespace Tests\Feature;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\MockObject\MockObject;
-use Psr\Http\Client\ClientInterface;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
-use Shopify\Clients\HttpClientFactory;
 use Shopify\Context;
-use Tests\TestCase;
 
-class CallbackTest extends TestCase
+class CallbackTest extends BaseTestCase
 {
     use RefreshDatabase;
 
@@ -78,7 +74,26 @@ class CallbackTest extends TestCase
             ->get("/auth/callback?$query");
 
         $response->assertStatus(302);
-        $response->assertRedirect("?" . http_build_query(['host' => base64_encode($this->domain . "/admin"), 'shop' => $this->domain]));
+        $response->assertRedirect(
+            "?" . http_build_query(['host' => base64_encode($this->domain . "/admin"), 'shop' => $this->domain])
+        );
+    }
+
+    private function requestQueryParameters(): string
+    {
+        $queryParameters = [
+            'code' => '190a7aff728f86ec7cd29c695da6d341',
+            'host' => base64_encode($this->domain . "/admin"),
+            'shop' => 'test-shop.myshopify.io',
+            'state' => 'test-session-state',
+            'timestamp' => '1620186121',
+        ];
+
+        $computedHmac = hash_hmac('sha256', http_build_query($queryParameters), Context::$API_SECRET_KEY);
+
+        $queryParameters['hmac'] = $computedHmac;
+
+        return http_build_query($queryParameters);
     }
 
     public function testCallBackForOnlineSession()
@@ -115,34 +130,8 @@ class CallbackTest extends TestCase
             ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $onlineSession->getId())
             ->get("/auth/callback?$query");
 
-        $response->assertRedirect("?" . http_build_query(['host' => base64_encode($this->domain . "/admin"), 'shop' => $this->domain]));
-    }
-
-    private function mockClient(): ClientInterface|MockObject
-    {
-        $client = $this->createMock(ClientInterface::class);
-        $factory = $this->createMock(HttpClientFactory::class);
-        $factory->expects($this->any())
-            ->method('client')
-            ->willReturn($client);
-        Context::$HTTP_CLIENT_FACTORY = $factory;
-        return $client;
-    }
-
-    private function requestQueryParameters(): string
-    {
-        $queryParameters = [
-            'code' => '190a7aff728f86ec7cd29c695da6d341',
-            'host' => base64_encode($this->domain . "/admin"),
-            'shop' => 'test-shop.myshopify.io',
-            'state' => 'test-session-state',
-            'timestamp' => '1620186121',
-        ];
-
-        $computedHmac = hash_hmac('sha256', http_build_query($queryParameters), Context::$API_SECRET_KEY);
-
-        $queryParameters['hmac'] = $computedHmac;
-
-        return http_build_query($queryParameters);
+        $response->assertRedirect(
+            "?" . http_build_query(['host' => base64_encode($this->domain . "/admin"), 'shop' => $this->domain])
+        );
     }
 }
