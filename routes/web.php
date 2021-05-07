@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Shopify\Context;
 use Shopify\Auth\OAuth;
+use Shopify\Utils;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,9 @@ Route::get('/auth/callback', function (Request $request) {
     $host = $request->query('host');
     $shop = $request->query('shop');
     return redirect("?" . http_build_query(['host' => $host, 'shop' => $shop]));
+});
+
+Route::post('/graphql', function (Request $request) {
+    $result = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
+    return response($result->getDecodedBody())->withHeaders($result->getHeaders());
 });
