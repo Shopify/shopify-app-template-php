@@ -6,5 +6,5 @@
 
 ```
 composer install
-php artisan test --env=testing
+composer lint
 ```
