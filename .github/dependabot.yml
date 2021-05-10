@@ -1,10 +1,4 @@
 version: 2
-registries:
-  github-shopify:
-    type: git
-    url: https://github.com
-    username: ${{secrets.DEPENDENCIES_GITHUB_USER}}
-    password: ${{secrets.DEPENDENCIES_GITHUB_TOKEN}}
 updates:
   - package-ecosystem: composer
     directory: "/"
@@ -17,4 +11,3 @@ updates:
     labels:
       - "Composer upgrades"
     open-pull-requests-limit: 100
-    registries: '*'
