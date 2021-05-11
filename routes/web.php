@@ -20,10 +20,11 @@ use Shopify\Auth\OAuth;
 
 Route::get('/', function (Request $request) {
     $shop = $request->query('shop');
+    $host = $request->query('host');
     $appInstalled = Session::where('shop', $shop)->exists();
     if($appInstalled){
         return view('react', [
-            'shop' => $shop,
+            'host' => $host,
             'apiKey' => Context::$API_KEY
         ]);
     }

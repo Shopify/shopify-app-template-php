@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import createApp from "@shopify/app-bridge";
 import { getSessionToken } from "@shopify/app-bridge-utils"
 
-function App({shop, apiKey}) {
+function App({host, apiKey}) {
     const app = createApp({
         apiKey: apiKey,
-        shopOrigin: shop
+        host: host
     });
     getSessionToken(app).then((token) => {
         console.log(token);
