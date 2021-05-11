@@ -25,5 +25,5 @@ Check [Laravel Docs: Running Mix](https://laravel.com/docs/8.x/mix#running-mix) 
 
 ```
 composer install
-composer lint
+composer test
 ```
