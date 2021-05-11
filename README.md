@@ -7,8 +7,8 @@
 Make sure that you have a `.env` file. You can look at `.env.example` and `.env.testing` for inspiration. `.env file must contain the following environment variables
 - SHOPIFY_API_KEY
 - SHOPIFY_API_SECRET_KEY
-- SCOPES
-- HOST_NAME
+- SHOPIFY_SCOPES
+- SHOPIFY_APP_HOST_NAME
 
 ### Start laravel
 
