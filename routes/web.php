@@ -4,7 +4,6 @@ use App\Models\Session;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Shopify\Context;
-use Illuminate\Http\Request;
 use Shopify\Auth\OAuth;
 
 /*
