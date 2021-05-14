@@ -32,4 +32,3 @@ Fixes #0000 <!-- link to issue if one exists -->
 
 - [ ] I have added a changelog entry, prefixed by the type of change noted above
 - [ ] I have added/updated tests for this change
-- [ ] I have updated the documentation for public APIs from the library (if applicable)
