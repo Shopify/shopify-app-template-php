@@ -37,7 +37,7 @@ class AddOnlineAccessInfoToSessions extends Migration
             $table->dropColumn('user_first_name');
             $table->dropColumn('user_last_name');
             $table->dropColumn('user_email');
-            $table->dropColumn('account_owner');
+            $table->dropColumn('user_email_verified');
             $table->dropColumn('account_owner');
             $table->dropColumn('locale');
             $table->dropColumn('collaborator');
