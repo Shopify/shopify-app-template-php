@@ -62,10 +62,10 @@ Route::get('/login', function (Request $request) {
     }
 
     $installUrl = OAuth::begin(
-        $shop,
-        '/auth/callback',
-        true,
-        function (Shopify\Auth\OAuthCookie $cookie) {
+        shop: $shop,
+        redirectPath: '/auth/callback',
+        isOnline: true,
+        setCookieFunction: function (Shopify\Auth\OAuthCookie $cookie) {
             Cookie::queue(
                 $cookie->getName(),
                 $cookie->getValue(),
@@ -111,7 +111,7 @@ Route::get('/auth/callback', function (Request $request) {
 Route::post('/graphql', function (Request $request) {
     $result = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
     return response($result->getDecodedBody())->withHeaders($result->getHeaders());
-});
+})->middleware('shopify.auth:online');
 
 Route::post('/webhooks', function (Request $request) {
     try {

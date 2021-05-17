@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\EnsureShopifySession;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,33 +33,43 @@ class ProxyGraphqlTest extends BaseTestCase
             isOnline: true,
             state: '1234',
         );
-
-
+        $session->setScope('write_products');
         $session->setAccessToken('token');
 
         $this->assertTrue(Context::$SESSION_STORAGE->storeSession($session));
         $this->assertEquals($session, Context::$SESSION_STORAGE->loadSession('test-shop.myshopify.com_42'));
 
-        $client = $this->mockClient();
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
 
-        $client->expects($this->exactly(1))
+        $client = $this->mockClient();
+        $client->expects($this->exactly(2))
             ->method('sendRequest')
-            ->with(
-                $this->callback(
-                    function ($request) use ($testGraphqlQuery) {
-                        return
-                            $request->getUri(
-                            ) == "https://test-shop.myshopify.io/admin/api/" . Context::$API_VERSION . '/graphql.json'
-                            && $request->getBody()->getContents() == $testGraphqlQuery;
-                    }
-                )
+            ->withConsecutive(
+                // The first request is made by the session authentication middleware, to make sure the token is active
+                [$this->callback(function ($request) use ($graphqlUrl) {
+                    // For some reason this callback is being run twice, so we need to make sure to rewind the body
+                    // stream before grabbing the contents to test.
+                    $request->getBody()->rewind();
+                    return (
+                        $request->getUri() == $graphqlUrl
+                        && $request->getBody()->getContents() === EnsureShopifySession::TEST_GRAPHQL_QUERY
+                    );
+                })],
+                [$this->callback(function ($request) use ($testGraphqlQuery, $graphqlUrl) {
+                    $request->getBody()->rewind();
+                    return (
+                        $request->getUri() == $graphqlUrl
+                        && $request->getBody()->getContents() === $testGraphqlQuery
+                    );
+                })],
             )
-            ->willReturn(
+            ->willReturnOnConsecutiveCalls(
+                new Response(status: 200, headers: [], body: '[]'),
                 new Response(
                     status: 200,
                     headers: ["response-header" => "header-value"],
-                    body: json_encode($testGraphqlResponse)
-                )
+                    body: json_encode($testGraphqlResponse),
+                ),
             );
         $token = $this->encodeJwtPayload();
 
