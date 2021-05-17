@@ -37,6 +37,14 @@ class CallbackTest extends BaseTestCase
         ],
     ];
 
+    private array $webhookCheckEmpty = [
+        'data' => [
+            'webhookSubscriptions' => [
+                'edges' => [],
+            ],
+        ],
+    ];
+
     public function testCallBackForOfflineSession()
     {
         $offlineSession = new Session(
@@ -49,22 +57,21 @@ class CallbackTest extends BaseTestCase
         // Session is already stored in the OAuth::begin
         Context::$SESSION_STORAGE->storeSession($offlineSession);
 
+        $oauthTokenUrl = "https://test-shop.myshopify.io/admin/oauth/access_token";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
+
         $client = $this->mockClient();
-
-
-        $client->expects($this->exactly(1))
+        $client->expects($this->exactly(3))
             ->method('sendRequest')
-            ->with(
-                $this->callback(
-                    fn($request) => $request->getUri() == "https://test-shop.myshopify.io/admin/oauth/access_token"
-                )
+            ->withConsecutive(
+                [$this->callback(fn($request) => $request->getUri() == $oauthTokenUrl)],
+                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
+                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
             )
-            ->willReturn(
-                new Response(
-                    status: 200,
-                    headers: [],
-                    body: json_encode($this->offlineResponse)
-                )
+            ->willReturnOnConsecutiveCalls(
+                new Response(status: 200, headers: [], body: json_encode($this->onlineResponse)),
+                new Response(status: 200, headers: [], body: json_encode($this->webhookCheckEmpty)),
+                new Response(status: 200, headers: [], body: '[]'),
             );
 
         $query = $this->requestQueryParameters();
@@ -107,21 +114,21 @@ class CallbackTest extends BaseTestCase
 
         Context::$SESSION_STORAGE->storeSession($onlineSession);
 
-        $client = $this->mockClient();
+        $oauthTokenUrl = "https://test-shop.myshopify.io/admin/oauth/access_token";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
 
-        $client->expects($this->exactly(1))
+        $client = $this->mockClient();
+        $client->expects($this->exactly(3))
             ->method('sendRequest')
-            ->with(
-                $this->callback(
-                    fn($request) => $request->getUri() == "https://test-shop.myshopify.io/admin/oauth/access_token"
-                )
+            ->withConsecutive(
+                [$this->callback(fn($request) => $request->getUri() == $oauthTokenUrl)],
+                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
+                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
             )
-            ->willReturn(
-                new Response(
-                    status: 200,
-                    headers: [],
-                    body: json_encode($this->onlineResponse)
-                )
+            ->willReturnOnConsecutiveCalls(
+                new Response(status: 200, headers: [], body: json_encode($this->onlineResponse)),
+                new Response(status: 200, headers: [], body: json_encode($this->webhookCheckEmpty)),
+                new Response(status: 200, headers: [], body: '[]'),
             );
 
         $query = $this->requestQueryParameters();
