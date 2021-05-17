@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Lib\DbSessionStorage;
 use Illuminate\Support\ServiceProvider;
 use Shopify\Context;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +34,7 @@ class AppServiceProvider extends ServiceProvider
             hostName: env('SHOPIFY_APP_HOST_NAME'),
             sessionStorage: new DbSessionStorage()
         );
+
+        URL::forceScheme('https');
     }
 }
