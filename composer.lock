@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52e76ffb0a2617e2880cd99ba1bb8ca1",
+    "content-hash": "0e0296ac7f4dec5a6a8d02577cdd4692",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2371,11 +2371,11 @@
         },
         {
             "name": "shopify/shopify-api",
-            "version": "0.0.2",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "ssh://git@github.com/Shopify/shopify-php-api.git",
-                "reference": "debc6d1720cab1a75ab8e66fb871d27c21c490e5"
+                "reference": "87a385203950e94547be81f5f9904c0133f63638"
             },
             "require": {
                 "firebase/php-jwt": "^5.2",
@@ -2390,6 +2390,7 @@
                 "phpunit/phpunit": "^9",
                 "squizlabs/php_codesniffer": "^3.6"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2430,7 +2431,7 @@
                 "shopify",
                 "webhook"
             ],
-            "time": "2021-04-30T12:46:04+00:00"
+            "time": "2021-05-10T04:10:49+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -7448,7 +7449,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "shopify/shopify-api": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

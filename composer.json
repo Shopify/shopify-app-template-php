@@ -17,7 +17,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "shopify/shopify-api": "^0.0"
+        "shopify/shopify-api": "dev-main"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
