@@ -6,9 +6,9 @@
 
 Make sure that you have a `.env` file. You can look at `.env.example` and `.env.testing` for inspiration. `.env file must contain the following environment variables
 - SHOPIFY_API_KEY
-- SHOPIFY_API_SECRET_KEY
-- SHOPIFY_SCOPES
-- SHOPIFY_APP_HOST_NAME
+- SHOPIFY_API_SECRET
+- SCOPES
+- HOST
 
 ### Start laravel
 
@@ -17,7 +17,7 @@ Make sure that you have a `.env` file. You can look at `.env.example` and `.env.
 ### Serving React
 Make sure to run `npm install` before running the application.
 
-`npm run watch` 
+`npm run watch`
 
 Check [Laravel Docs: Running Mix](https://laravel.com/docs/8.x/mix#running-mix) for more information
 
