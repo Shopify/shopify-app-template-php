@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/db.sqlite
 /vendor
 .env
 .env.backup
