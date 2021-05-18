@@ -112,7 +112,7 @@ Route::get('/auth/callback', function (Request $request) {
 
 Route::post('/graphql', function (Request $request) {
     $result = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
-    return response($result->getDecodedBody())->withHeaders($result->getHeaders());
+    return response($result->getDecodedBody());
 })->middleware('shopify.auth:online');
 
 Route::get('/rest-example', function (Request $request) {
