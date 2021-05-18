@@ -6,6 +6,7 @@ use App\Http\Middleware\EnsureShopifySession;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
 use Shopify\Context;
 
@@ -13,9 +14,22 @@ class ProxyGraphqlTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    public function testGraphqlProxyFetchesDataWithJWT()
+    public function appTypeProvider()
     {
-        $testGraphqlQuery = '{"variables":{},"query":"{\n shop {\n name\n __typename\n }\n}\n"}';
+        return [
+            'embedded app' => [true],
+            'non-embedded app' => [false],
+        ];
+    }
+
+    /**
+     * @dataProvider appTypeProvider
+     */
+    public function testGraphqlProxyFetchesDataWithJWT(bool $isEmbedded)
+    {
+        Context::$IS_EMBEDDED_APP = $isEmbedded;
+
+        $testGraphqlQuery = '{"variables":[],"query":"{\n shop {\n name\n __typename\n }\n}\n"}';
 
         $testGraphqlResponse = [
             "data" => [
@@ -25,8 +39,7 @@ class ProxyGraphqlTest extends BaseTestCase
             ],
         ];
 
-        $sessionId = 'test-shop.myshopify.com_42';
-        Context::$IS_EMBEDDED_APP = true;
+        $sessionId = $isEmbedded ? 'test-shop.myshopify.com_42' : 'cookie-session-id';
         $session = new Session(
             id: $sessionId,
             shop: 'test-shop.myshopify.io',
@@ -37,7 +50,7 @@ class ProxyGraphqlTest extends BaseTestCase
         $session->setAccessToken('token');
 
         $this->assertTrue(Context::$SESSION_STORAGE->storeSession($session));
-        $this->assertEquals($session, Context::$SESSION_STORAGE->loadSession('test-shop.myshopify.com_42'));
+        $this->assertEquals($session, Context::$SESSION_STORAGE->loadSession($sessionId));
 
         $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
 
@@ -71,20 +84,28 @@ class ProxyGraphqlTest extends BaseTestCase
                     body: json_encode($testGraphqlResponse),
                 ),
             );
-        $token = $this->encodeJwtPayload();
 
-        $response = $this->call(
+        $request = $this;
+        $headers = [];
+        if ($isEmbedded) {
+            $token = $this->encodeJwtPayload();
+            $headers['Authorization'] = "Bearer $token";
+        } else {
+            $request->withCredentials()
+                ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId);
+        }
+
+        $response = $request->json(
             method: 'POST',
             uri: "/graphql",
-            server: $this->transformHeadersToServerVars(['Authorization' => "Bearer $token"]),
-            content: $testGraphqlQuery
+            headers: $headers,
+            data: json_decode($testGraphqlQuery, true),
         );
 
         $response->assertStatus(200);
         $response->assertExactJson($testGraphqlResponse);
         $response->assertHeader('response-header', 'header-value');
     }
-
 
     private function encodeJwtPayload(): string
     {
