@@ -10,12 +10,11 @@ use Shopify\Auth\Session;
 use Shopify\Context;
 use Tests\TestCase;
 
-
 class DBSessionStorageTest extends TestCase
 {
     use RefreshDatabase;
 
-    const TEST_SESSION_ID = "test-session-id";
+    private const TEST_SESSION_ID = "test-session-id";
     private Session $session;
 
     public function setUp(): void
@@ -40,9 +39,7 @@ class DBSessionStorageTest extends TestCase
         $this->session->setExpires(strtotime('+1 day'));
         $this->session->setAccessToken('totally_real_access_token');
         $this->session->setOnlineAccessInfo(
-            new AccessTokenOnlineUserInfo(
-                1, "firstname", "lastname", "email@host.com", true, true, "en-ca", false
-            )
+            new AccessTokenOnlineUserInfo(1, "firstname", "lastname", "email@host.com", true, true, "en-ca", false)
         );
         Context::$SESSION_STORAGE->storeSession($this->session);
         $this->assertEquals(
@@ -91,5 +88,4 @@ class DBSessionStorageTest extends TestCase
         Context::$SESSION_STORAGE->storeSession($this->session);
         $this->assertTrue(Context::$SESSION_STORAGE->deleteSession(self::TEST_SESSION_ID));
     }
-
 }

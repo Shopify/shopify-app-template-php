@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Context;
 use Tests\TestCase;
 
-
 class LoginRouteTest extends TestCase
 {
     use RefreshDatabase;
