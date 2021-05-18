@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createApp from "@shopify/app-bridge";
 import {Redirect} from "@shopify/app-bridge/actions";
 import {authenticatedFetch} from "@shopify/app-bridge-utils"
-import {ApolloClient, gql, HttpLink, InMemoryCache} from '@apollo/client';
-
-const TEST_QUERY = gql`query { shop {name} }`;
+import {ApolloClient, HttpLink, InMemoryCache} from '@apollo/client';
+import {ApolloProvider} from '@apollo/client/react';
+import {AppProvider} from "@shopify/polaris";
+import translations from "@shopify/polaris/locales/en.json";
+import '@shopify/polaris/dist/styles.css';
+import PageLayout from "./components/PageLayout";
+import ProductsPage from "./components/ProductsPage";
+import {Provider, useAppBridge} from '@shopify/app-bridge-react';
 
 function userLoggedInFetch(app) {
     const fetchFunction = authenticatedFetch(app);
@@ -25,13 +29,8 @@ function userLoggedInFetch(app) {
     };
 }
 
-function App({shop, host, apiKey}) {
-    const app = createApp({
-        shop: shop,
-        host: host,
-        apiKey: apiKey,
-    });
-
+function AppBridgeApolloProvider({children}) {
+    const app = useAppBridge();
     const client = new ApolloClient({
         link: new HttpLink({
             credentials: 'same-origin',
@@ -41,14 +40,26 @@ function App({shop, host, apiKey}) {
         cache: new InMemoryCache()
     });
 
-    client
-        .query({
-            query: TEST_QUERY
-        })
-        .then(result => console.log(result));
+    return (
+        <ApolloProvider client={client}>
+            {children}
+        </ApolloProvider>
+    );
+}
+
+function App({shop, host, apiKey}) {
+    const config = {apiKey: apiKey, shopOrigin: shop, host: host, forceRedirect: true};
 
     return (
-        <h1>Hello React</h1>
+        <Provider config={config}>
+            <AppProvider i18n={translations}>
+                <AppBridgeApolloProvider>
+                    <PageLayout>
+                        <ProductsPage/>
+                    </PageLayout>
+                </AppBridgeApolloProvider>
+            </AppProvider>
+        </Provider>
     );
 }
 

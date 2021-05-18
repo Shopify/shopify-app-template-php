@@ -104,7 +104,6 @@ class ProxyGraphqlTest extends BaseTestCase
 
         $response->assertStatus(200);
         $response->assertExactJson($testGraphqlResponse);
-        $response->assertHeader('response-header', 'header-value');
     }
 
     private function encodeJwtPayload(): string
