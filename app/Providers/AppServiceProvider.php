@@ -32,9 +32,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Context::initialize(
             apiKey: env('SHOPIFY_API_KEY'),
-            apiSecretKey: env('SHOPIFY_API_SECRET_KEY'),
-            scopes: env('SHOPIFY_SCOPES'),
-            hostName: env('SHOPIFY_APP_HOST_NAME'),
+            apiSecretKey: env('SHOPIFY_API_SECRET'),
+            scopes: env('SCOPES'),
+            hostName: env('HOST'),
             sessionStorage: new DbSessionStorage()
         );
 
