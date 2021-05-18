@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Log;
 use Shopify\Context;
 use Shopify\Utils;
 use Shopify\Auth\OAuth;
+use Shopify\Auth\Session as AuthSession;
 use Shopify\Clients\HttpHeaders;
+use Shopify\Clients\Rest;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
 
@@ -62,10 +64,10 @@ Route::get('/login', function (Request $request) {
     }
 
     $installUrl = OAuth::begin(
-        $shop,
-        '/auth/callback',
-        true,
-        function (Shopify\Auth\OAuthCookie $cookie) {
+        shop: $shop,
+        redirectPath: '/auth/callback',
+        isOnline: true,
+        setCookieFunction: function (Shopify\Auth\OAuthCookie $cookie) {
             Cookie::queue(
                 $cookie->getName(),
                 $cookie->getValue(),
@@ -111,7 +113,17 @@ Route::get('/auth/callback', function (Request $request) {
 Route::post('/graphql', function (Request $request) {
     $result = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
     return response($result->getDecodedBody())->withHeaders($result->getHeaders());
-});
+})->middleware('shopify.auth:online');
+
+Route::get('/rest-example', function (Request $request) {
+    /** @var AuthSession */
+    $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
+
+    $client = new Rest($session->getShop(), $session->getAccessToken());
+    $result = $client->get('products', query: ['limit' => 5]);
+
+    return response($result->getDecodedBody());
+})->middleware('shopify.auth:online');
 
 Route::post('/webhooks', function (Request $request) {
     try {
