@@ -28,7 +28,7 @@ Route::get('/', function (Request $request) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
     $host = $request->query('host');
     $appInstalled = Session::where('shop', $shop)->exists();
-    if($appInstalled){
+    if ($appInstalled) {
         return view('react', [
             'shop' => $shop,
             'host' => $host,
@@ -65,7 +65,7 @@ Route::get('/login', function (Request $request) {
         $shop,
         '/auth/callback',
         true,
-        function(Shopify\Auth\OAuthCookie $cookie) {
+        function (Shopify\Auth\OAuthCookie $cookie) {
             Cookie::queue(
                 $cookie->getName(),
                 $cookie->getValue(),

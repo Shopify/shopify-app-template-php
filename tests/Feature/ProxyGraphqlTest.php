@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature;
-
 
 use Firebase\JWT\JWT;
 use GuzzleHttp\Psr7\Response;
@@ -92,8 +90,4 @@ class ProxyGraphqlTest extends BaseTestCase
         ];
         return JWT::encode($payload, Context::$API_SECRET_KEY);
     }
-
-
 }
-
-
