@@ -10,6 +10,7 @@ import '@shopify/polaris/dist/styles.css';
 import PageLayout from "./components/PageLayout";
 import ProductsPage from "./components/ProductsPage";
 import {Provider, useAppBridge} from '@shopify/app-bridge-react';
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 
 function userLoggedInFetch(app) {
     const fetchFunction = authenticatedFetch(app);
@@ -51,15 +52,21 @@ function App({shop, host, apiKey}) {
     const config = {apiKey: apiKey, shopOrigin: shop, host: host, forceRedirect: true};
 
     return (
-        <Provider config={config}>
-            <AppProvider i18n={translations}>
-                <AppBridgeApolloProvider>
-                    <PageLayout>
-                        <ProductsPage/>
-                    </PageLayout>
-                </AppBridgeApolloProvider>
-            </AppProvider>
-        </Provider>
+        <BrowserRouter>
+            <Provider config={config}>
+                <AppProvider i18n={translations}>
+                    <AppBridgeApolloProvider>
+                        <PageLayout>
+                            <Switch>
+                                <Route path="/">
+                                    <ProductsPage/>
+                                </Route>
+                            </Switch>
+                        </PageLayout>
+                    </AppBridgeApolloProvider>
+                </AppProvider>
+            </Provider>
+        </BrowserRouter>
     );
 }
 
