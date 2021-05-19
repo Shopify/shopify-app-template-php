@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
             apiKey: env('SHOPIFY_API_KEY'),
             apiSecretKey: env('SHOPIFY_API_SECRET'),
             scopes: env('SCOPES'),
-            hostName: env('HOST'),
+            hostName: str_replace('https://', '', env('HOST')),
             sessionStorage: new DbSessionStorage()
         );
 
