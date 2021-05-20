@@ -26,7 +26,7 @@ use Shopify\Webhooks\Topics;
 |
 */
 
-Route::get('/', function (Request $request) {
+Route::fallback(function (Request $request) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
     $host = $request->query('host');
     $appInstalled = Session::where('shop', $shop)->exists();
