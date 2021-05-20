@@ -1,17 +1,17 @@
 <?php
 
 use App\Models\Session;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
-use Shopify\Context;
-use Shopify\Utils;
+use Illuminate\Support\Facades\Route;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session as AuthSession;
 use Shopify\Clients\HttpHeaders;
 use Shopify\Clients\Rest;
+use Shopify\Context;
+use Shopify\Utils;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
 
@@ -111,8 +111,15 @@ Route::get('/auth/callback', function (Request $request) {
 });
 
 Route::post('/graphql', function (Request $request) {
-    $result = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
-    return response($result->getDecodedBody());
+    $response = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
+
+    $xHeaders = array_filter(
+        $response->getHeaders(),
+        fn($key) => str_starts_with($key, 'X') || str_starts_with($key, 'x'),
+        ARRAY_FILTER_USE_KEY
+    );
+
+    return response($response->getDecodedBody(), $response->getStatusCode())->withHeaders($xHeaders );
 })->middleware('shopify.auth:online');
 
 Route::get('/rest-example', function (Request $request) {
