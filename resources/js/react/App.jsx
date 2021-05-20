@@ -11,6 +11,7 @@ import PageLayout from "./components/PageLayout";
 import ProductsPage from "./components/ProductsPage";
 import {Provider, useAppBridge} from '@shopify/app-bridge-react';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
+import ClientRouter from "./components/ClientRouter";
 
 function userLoggedInFetch(app) {
     const fetchFunction = authenticatedFetch(app);
@@ -54,13 +55,12 @@ function App({shop, host, apiKey}) {
     return (
         <BrowserRouter>
             <Provider config={config}>
+                <ClientRouter/>
                 <AppProvider i18n={translations}>
                     <AppBridgeApolloProvider>
                         <PageLayout>
                             <Switch>
-                                <Route path="/">
-                                    <ProductsPage/>
-                                </Route>
+                                <Route path="/" component={ProductsPage}/>
                             </Switch>
                         </PageLayout>
                     </AppBridgeApolloProvider>
