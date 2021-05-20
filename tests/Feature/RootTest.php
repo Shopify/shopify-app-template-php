@@ -33,4 +33,20 @@ class RootTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('react');
     }
+
+    public function testUncaughtRequestsTriggerRouteBehaviour()
+    {
+        $session = new Session(
+            "test-session-id",
+            "test-shop.myshopify.io",
+            false,
+            "test-session-state"
+        );
+
+        Context::$SESSION_STORAGE->storeSession($session);
+
+        $response = $this->get("/not-a-real-endpoint?shop=test-shop.myshopify.io");
+        $response->assertStatus(200);
+        $response->assertViewIs('react');
+    }
 }
