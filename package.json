@@ -7,24 +7,24 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production"
-    },
-    "devDependencies": {
-        "@babel/preset-react": "^7.13.13",
-        "axios": "^0.21",
-        "laravel-mix": "^6.0.19",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "production": "mix --production",
+        "build": "npm run production"
     },
     "dependencies": {
+        "@babel/preset-react": "^7.13.13",
         "@apollo/client": "^3.3.16",
         "@shopify/app-bridge": "^2.0.2",
         "@shopify/app-bridge-react": "^2.0.2",
         "@shopify/app-bridge-utils": "^2.0.2",
         "@shopify/polaris": "^6.4.0",
+        "axios": "^0.21",
         "graphql": "^15.5.0",
+        "laravel-mix": "^6.0.19",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-router-dom": "^5.2.0"
-    }
+    },
+    "devDependencies": {}
 }
