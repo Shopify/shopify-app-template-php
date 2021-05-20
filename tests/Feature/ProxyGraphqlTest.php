@@ -79,8 +79,11 @@ class ProxyGraphqlTest extends BaseTestCase
             ->willReturnOnConsecutiveCalls(
                 new Response(status: 200, headers: [], body: '[]'),
                 new Response(
-                    status: 200,
-                    headers: ["response-header" => "header-value"],
+                    status: 201, // Status code is usually 200, but changed here to 201 for test purposes
+                    headers: [
+                                "X-Response-Upper-Case-Header" => "header-value",
+                                "x-response-lower-case-header" => "header-value"
+                            ],
                     body: json_encode($testGraphqlResponse),
                 ),
             );
@@ -98,12 +101,14 @@ class ProxyGraphqlTest extends BaseTestCase
         $response = $request->json(
             method: 'POST',
             uri: "/graphql",
-            headers: $headers,
             data: json_decode($testGraphqlQuery, true),
+            headers: $headers,
         );
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $response->assertExactJson($testGraphqlResponse);
+        $response->assertHeader('X-Response-Upper-Case-Header', 'header-value');
+        $response->assertHeader('x-response-lower-case-header', 'header-value');
     }
 
     private function encodeJwtPayload(): string
