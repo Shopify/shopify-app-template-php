@@ -12,6 +12,7 @@ import ProductsPage from "./components/ProductsPage";
 import {Provider, useAppBridge} from '@shopify/app-bridge-react';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import ClientRouter from "./components/ClientRouter";
+import AppNavigation from "./components/AppNavigation";
 
 function userLoggedInFetch(app) {
     const fetchFunction = authenticatedFetch(app);
@@ -49,6 +50,9 @@ function AppBridgeApolloProvider({children}) {
     );
 }
 
+function ExamplePage() {
+    return <div>Example Page</div>
+}
 function App({shop, host, apiKey}) {
     const config = {apiKey: apiKey, shopOrigin: shop, host: host, forceRedirect: true};
 
@@ -58,8 +62,10 @@ function App({shop, host, apiKey}) {
                 <ClientRouter/>
                 <AppProvider i18n={translations}>
                     <AppBridgeApolloProvider>
+                        <AppNavigation/>
                         <PageLayout>
                             <Switch>
+                                <Route path="/example" component={ExamplePage}/>
                                 <Route path="/" component={ProductsPage}/>
                             </Switch>
                         </PageLayout>
