@@ -29,12 +29,7 @@ class RestExampleTest extends BaseTestCase
         Context::$IS_EMBEDDED_APP = $isEmbedded;
 
         $sessionId = $isEmbedded ? 'test-shop.myshopify.io_42' : 'cookie-session-id';
-        $session = new Session(
-            id: $sessionId,
-            shop: 'test-shop.myshopify.io',
-            isOnline: true,
-            state: '1234',
-        );
+        $session = new Session($sessionId, 'test-shop.myshopify.io', true, '1234');
         $session->setScope('write_products');
         $session->setAccessToken('token');
 
@@ -55,12 +50,20 @@ class RestExampleTest extends BaseTestCase
         $client->expects($this->exactly(2))
             ->method('sendRequest')
             ->withConsecutive(
-                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
-                [$this->callback(fn($request) => $request->getUri() == $restUrl)],
+                [$this->callback(
+                    function ($request) use ($graphqlUrl) {
+                        return $request->getUri() == $graphqlUrl;
+                    }
+                )],
+                [$this->callback(
+                    function ($request) use ($restUrl) {
+                        return $request->getUri() == $restUrl;
+                    }
+                )],
             )
             ->willReturnOnConsecutiveCalls(
-                new Response(status: 200),
-                new Response(status: 200, body: json_encode($restResponse)),
+                new Response(200),
+                new Response(200, [], json_encode($restResponse)),
             );
 
         $request = $this;
@@ -73,11 +76,7 @@ class RestExampleTest extends BaseTestCase
                 ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId);
         }
 
-        $response = $request->json(
-            method: 'GET',
-            uri: "/rest-example",
-            headers: $headers,
-        );
+        $response = $request->json('GET', "/rest-example", [], $headers);
 
         $response->assertStatus(200);
         $response->assertExactJson($restResponse);

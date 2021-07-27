@@ -35,13 +35,18 @@ class EnsureShopifySession
      */
     public function handle(Request $request, Closure $next, string $accessMode = self::ACCESS_MODE_ONLINE)
     {
-        $isOnline = match ($accessMode) {
-            self::ACCESS_MODE_ONLINE => true,
-            self::ACCESS_MODE_OFFLINE => false,
-            default => throw new Exception(
-                "Unrecognized access mode '$accessMode', accepted values are 'online' and 'offline'"
-            ),
-        };
+        switch ($accessMode) {
+            case self::ACCESS_MODE_ONLINE:
+                $isOnline = true;
+                break;
+            case self::ACCESS_MODE_OFFLINE:
+                $isOnline = false;
+                break;
+            default:
+                throw new Exception(
+                    "Unrecognized access mode '$accessMode', accepted values are 'online' and 'offline'"
+                );
+        }
 
         $shop = Utils::sanitizeShopDomain($request->query('shop', ''));
         $session = Utils::loadCurrentSession($request->header(), $request->cookie(), $isOnline);
@@ -54,7 +59,7 @@ class EnsureShopifySession
         if ($session && $session->isValid()) {
             // If the session is valid, check if it's actually active by making a very simple request, and proceed
             $client = new Graphql($session->getShop(), $session->getAccessToken());
-            $response = $client->query(data: self::TEST_GRAPHQL_QUERY);
+            $response = $client->query(self::TEST_GRAPHQL_QUERY);
 
             if ($response->getStatusCode() === 200) {
                 $request->attributes->set('shopifySession', $session);

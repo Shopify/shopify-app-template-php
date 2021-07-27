@@ -15,17 +15,13 @@ class DBSessionStorageTest extends TestCase
     use RefreshDatabase;
 
     private const TEST_SESSION_ID = "test-session-id";
-    private Session $session;
+    /** @var Session */
+    private $session;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->session = new Session(
-            self::TEST_SESSION_ID,
-            "test-shop.myshopify.io",
-            false,
-            "test-session-state"
-        );
+        $this->session = new Session(self::TEST_SESSION_ID, "test-shop.myshopify.io", false, "test-session-state");
     }
 
     public function testLoadSessionReturnNullIfSessionDoesNotExist()

@@ -40,12 +40,7 @@ class ProxyGraphqlTest extends BaseTestCase
         ];
 
         $sessionId = $isEmbedded ? 'test-shop.myshopify.com_42' : 'cookie-session-id';
-        $session = new Session(
-            id: $sessionId,
-            shop: 'test-shop.myshopify.io',
-            isOnline: true,
-            state: '1234',
-        );
+        $session = new Session($sessionId, 'test-shop.myshopify.io', true, '1234');
         $session->setScope('write_products');
         $session->setAccessToken('token');
 
@@ -77,14 +72,14 @@ class ProxyGraphqlTest extends BaseTestCase
                 })],
             )
             ->willReturnOnConsecutiveCalls(
-                new Response(status: 200, headers: [], body: '[]'),
+                new Response(200, [], '[]'),
                 new Response(
-                    status: 201, // Status code is usually 200, but changed here to 201 for test purposes
-                    headers: [
-                                "X-Response-Upper-Case-Header" => "header-value",
-                                "x-response-lower-case-header" => "header-value"
-                            ],
-                    body: json_encode($testGraphqlResponse),
+                    201, // Status code is usually 200, but changed here to 201 for test purposes
+                    [
+                        "X-Response-Upper-Case-Header" => "header-value",
+                        "x-response-lower-case-header" => "header-value"
+                    ],
+                    json_encode($testGraphqlResponse),
                 ),
             );
 
@@ -98,12 +93,7 @@ class ProxyGraphqlTest extends BaseTestCase
                 ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId);
         }
 
-        $response = $request->json(
-            method: 'POST',
-            uri: "/graphql",
-            data: json_decode($testGraphqlQuery, true),
-            headers: $headers,
-        );
+        $response = $request->json('POST', "/graphql", json_decode($testGraphqlQuery, true), $headers);
 
         $response->assertStatus(201);
         $response->assertExactJson($testGraphqlResponse);

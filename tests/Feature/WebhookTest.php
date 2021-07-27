@@ -14,7 +14,8 @@ class WebhookTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    private string $domain = "test-shop.myshopify.io";
+    /** @var string */
+    private $domain = "test-shop.myshopify.io";
 
     public function testWebhookIsProcessed()
     {
@@ -32,17 +33,16 @@ class WebhookTest extends BaseTestCase
         Registry::addHandler($topic, $mock);
 
         $hmac = base64_encode(hash_hmac('sha256', json_encode($body), Context::$API_SECRET_KEY, true));
-        $response = $this
-            ->json(
-                method: 'POST',
-                uri: "/webhooks",
-                data: $body,
-                headers: [
-                    HttpHeaders::X_SHOPIFY_TOPIC => $topic,
-                    HttpHeaders::X_SHOPIFY_DOMAIN => $shop,
-                    HttpHeaders::X_SHOPIFY_HMAC => $hmac,
-                ],
-            );
+        $response = $this->json(
+            'POST',
+            "/webhooks",
+            $body,
+            [
+                HttpHeaders::X_SHOPIFY_TOPIC => $topic,
+                HttpHeaders::X_SHOPIFY_DOMAIN => $shop,
+                HttpHeaders::X_SHOPIFY_HMAC => $hmac,
+            ],
+        );
 
         $response->assertStatus(200);
     }
