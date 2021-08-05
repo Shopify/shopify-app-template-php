@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class DbSessionStorage implements SessionStorage
 {
 
-    public function loadSession(string $sessionId): Session|null
+    public function loadSession(string $sessionId): ?Session
     {
         $dbSession = \App\Models\Session::where('session_id', $sessionId)->first();
 
@@ -35,14 +35,14 @@ class DbSessionStorage implements SessionStorage
             }
             if ($dbSession->user_id) {
                 $onlineAccessInfo = new AccessTokenOnlineUserInfo(
-                    id: (int)$dbSession->user_id,
-                    firstName: $dbSession->user_first_name,
-                    lastName: $dbSession->user_last_name,
-                    email: $dbSession->user_email,
-                    emailVerified: $dbSession->user_email_verified == 1,
-                    accountOwner: $dbSession->account_owner == 1,
-                    locale: $dbSession->locale,
-                    collaborator: $dbSession->collaborator == 1
+                    (int)$dbSession->user_id,
+                    $dbSession->user_first_name,
+                    $dbSession->user_last_name,
+                    $dbSession->user_email,
+                    $dbSession->user_email_verified == 1,
+                    $dbSession->account_owner == 1,
+                    $dbSession->locale,
+                    $dbSession->collaborator == 1
                 );
                 $session->setOnlineAccessInfo($onlineAccessInfo);
             }

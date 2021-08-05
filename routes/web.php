@@ -49,9 +49,7 @@ Route::get('/login/toplevel', function (Request $request, Response $response) {
         'hostName' => Context::$HOST_NAME,
     ]));
 
-    $response->withCookie(
-        cookie()->forever(name: 'shopify_top_level_oauth', value: '', sameSite:'strict', secure: true, httpOnly: true)
-    );
+    $response->withCookie(cookie()->forever('shopify_top_level_oauth', '', null, null, true, true, false, 'strict'));
 
     return $response;
 });
@@ -64,10 +62,10 @@ Route::get('/login', function (Request $request) {
     }
 
     $installUrl = OAuth::begin(
-        shop: $shop,
-        redirectPath: '/auth/callback',
-        isOnline: true,
-        setCookieFunction: function (Shopify\Auth\OAuthCookie $cookie) {
+        $shop,
+        '/auth/callback',
+        true,
+        function (Shopify\Auth\OAuthCookie $cookie) {
             Cookie::queue(
                 $cookie->getName(),
                 $cookie->getValue(),
@@ -92,12 +90,7 @@ Route::get('/auth/callback', function (Request $request) {
     $host = $request->query('host');
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
-    $response = Registry::register(
-        path: '/webhooks',
-        topic: Topics::APP_UNINSTALLED,
-        shop: $shop,
-        accessToken: $session->getAccessToken(),
-    );
+    $response = Registry::register('/webhooks', Topics::APP_UNINSTALLED, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
         Log::debug("Registered APP_UNINSTALLED webhook for shop $shop");
     } else {
@@ -115,11 +108,13 @@ Route::post('/graphql', function (Request $request) {
 
     $xHeaders = array_filter(
         $response->getHeaders(),
-        fn($key) => str_starts_with($key, 'X') || str_starts_with($key, 'x'),
+        function ($key) {
+            return str_starts_with($key, 'X') || str_starts_with($key, 'x');
+        },
         ARRAY_FILTER_USE_KEY
     );
 
-    return response($response->getDecodedBody(), $response->getStatusCode())->withHeaders($xHeaders );
+    return response($response->getDecodedBody(), $response->getStatusCode())->withHeaders($xHeaders);
 })->middleware('shopify.auth:online');
 
 Route::get('/rest-example', function (Request $request) {
@@ -127,7 +122,7 @@ Route::get('/rest-example', function (Request $request) {
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
 
     $client = new Rest($session->getShop(), $session->getAccessToken());
-    $result = $client->get('products', query: ['limit' => 5]);
+    $result = $client->get('products', [], ['limit' => 5]);
 
     return response($result->getDecodedBody());
 })->middleware('shopify.auth:online');

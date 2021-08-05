@@ -12,13 +12,16 @@ class CallbackTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    private string $domain = "test-shop.myshopify.io";
+    /** @var string */
+    private $domain = "test-shop.myshopify.io";
 
-    private array $offlineResponse = [
+    /** @var array */
+    private $offlineResponse = [
         'access_token' => 'some access token',
         'scope' => 'read_products',
     ];
-    private array $onlineResponse = [
+    /** @var array */
+    private $onlineResponse = [
         'access_token' => 'some access token',
         'scope' => 'read_products',
         'expires_in' => 525600,
@@ -35,7 +38,8 @@ class CallbackTest extends BaseTestCase
         ],
     ];
 
-    private array $webhookCheckEmpty = [
+    /** @var array */
+    private $webhookCheckEmpty = [
         'data' => [
             'webhookSubscriptions' => [
                 'edges' => [],
@@ -62,14 +66,20 @@ class CallbackTest extends BaseTestCase
         $client->expects($this->exactly(3))
             ->method('sendRequest')
             ->withConsecutive(
-                [$this->callback(fn($request) => $request->getUri() == $oauthTokenUrl)],
-                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
-                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
+                [$this->callback(function ($request) use ($oauthTokenUrl) {
+                    return $request->getUri() == $oauthTokenUrl;
+                })],
+                [$this->callback(function ($request) use ($graphqlUrl) {
+                    return $request->getUri() == $graphqlUrl;
+                })],
+                [$this->callback(function ($request) use ($graphqlUrl) {
+                    return $request->getUri() == $graphqlUrl;
+                })],
             )
             ->willReturnOnConsecutiveCalls(
-                new Response(status: 200, headers: [], body: json_encode($this->onlineResponse)),
-                new Response(status: 200, headers: [], body: json_encode($this->webhookCheckEmpty)),
-                new Response(status: 200, headers: [], body: '[]'),
+                new Response(200, [], json_encode($this->onlineResponse)),
+                new Response(200, [], json_encode($this->webhookCheckEmpty)),
+                new Response(200, [], '[]'),
             );
 
         $query = $this->requestQueryParameters();
@@ -119,14 +129,20 @@ class CallbackTest extends BaseTestCase
         $client->expects($this->exactly(3))
             ->method('sendRequest')
             ->withConsecutive(
-                [$this->callback(fn($request) => $request->getUri() == $oauthTokenUrl)],
-                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
-                [$this->callback(fn($request) => $request->getUri() == $graphqlUrl)],
+                [$this->callback(function ($request) use ($oauthTokenUrl) {
+                    return $request->getUri() == $oauthTokenUrl;
+                })],
+                [$this->callback(function ($request) use ($graphqlUrl) {
+                    return $request->getUri() == $graphqlUrl;
+                })],
+                [$this->callback(function ($request) use ($graphqlUrl) {
+                    return $request->getUri() == $graphqlUrl;
+                })],
             )
             ->willReturnOnConsecutiveCalls(
-                new Response(status: 200, headers: [], body: json_encode($this->onlineResponse)),
-                new Response(status: 200, headers: [], body: json_encode($this->webhookCheckEmpty)),
-                new Response(status: 200, headers: [], body: '[]'),
+                new Response(200, [], json_encode($this->onlineResponse)),
+                new Response(200, [], json_encode($this->webhookCheckEmpty)),
+                new Response(200, [], '[]'),
             );
 
         $query = $this->requestQueryParameters();

@@ -31,11 +31,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Context::initialize(
-            apiKey: env('SHOPIFY_API_KEY'),
-            apiSecretKey: env('SHOPIFY_API_SECRET'),
-            scopes: env('SCOPES'),
-            hostName: str_replace('https://', '', env('HOST')),
-            sessionStorage: new DbSessionStorage()
+            env('SHOPIFY_API_KEY'),
+            env('SHOPIFY_API_SECRET'),
+            env('SCOPES'),
+            str_replace('https://', '', env('HOST')),
+            new DbSessionStorage()
         );
 
         URL::forceScheme('https');

@@ -20,8 +20,10 @@ class BaseTestCase extends TestCase
         Context::$HTTP_CLIENT_FACTORY = $factory;
     }
 
-
-    protected function mockClient(): ClientInterface|MockObject
+    /**
+     * @return ClientInterface|MockObject
+     */
+    protected function mockClient()
     {
         $client = $this->createMock(ClientInterface::class);
         $factory = $this->createMock(HttpClientFactory::class);
