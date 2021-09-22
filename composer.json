@@ -4,12 +4,6 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "ssh://git@github.com/Shopify/shopify-php-api.git"
-        }
-    ],
     "require": {
         "php": "^7.3 || ^8.0",
         "doctrine/dbal": "^3.1",
@@ -18,7 +12,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "shopify/shopify-api": "dev-main",
+        "shopify/shopify-api": "^1.0",
         "squizlabs/php_codesniffer": "^3.6"
     },
     "require-dev": {

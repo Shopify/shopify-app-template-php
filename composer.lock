@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1b416a864719fdc7c0578b63dc700cf",
+    "content-hash": "956828d6b25ec026b31fa660431f5d22",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2851,11 +2851,17 @@
         },
         {
             "name": "shopify/shopify-api",
-            "version": "dev-add_php_73_support",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "ssh://git@github.com/Shopify/shopify-php-api.git",
-                "reference": "955707e8c8165b38fadf3f4388765ba7d5d4b698"
+                "url": "https://github.com/Shopify/shopify-php-api.git",
+                "reference": "a93ba91205277e6d918e4d89343fb36e44fb3301"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/a93ba91205277e6d918e4d89343fb36e44fb3301",
+                "reference": "a93ba91205277e6d918e4d89343fb36e44fb3301",
+                "shasum": ""
             },
             "require": {
                 "firebase/php-jwt": "^5.2",
@@ -2876,19 +2882,7 @@
                     "Shopify\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "ShopifyTest\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "XDEBUG_MODE=coverage ./vendor/bin/phpunit --color"
-                ],
-                "lint": [
-                    "./vendor/bin/phpcs --standard=PSR12 src tests"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2900,8 +2894,8 @@
             ],
             "description": "Shopify API Library for PHP",
             "keywords": [
-                "Admin API",
                 "Storefront API",
+                "admin api",
                 "app",
                 "graphql",
                 "jwt",
@@ -2910,7 +2904,11 @@
                 "shopify",
                 "webhook"
             ],
-            "time": "2021-07-27T14:23:28+00:00"
+            "support": {
+                "issues": "https://github.com/Shopify/shopify-php-api/issues",
+                "source": "https://github.com/Shopify/shopify-php-api/tree/v1.0.0"
+            },
+            "time": "2021-08-09T15:28:56+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -7989,9 +7987,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "shopify/shopify-api": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
