@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "956828d6b25ec026b31fa660431f5d22",
+    "content-hash": "496c7aac76179de65a5b30ed9349dc51",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2909,6 +2909,35 @@
                 "source": "https://github.com/Shopify/shopify-php-api/tree/v1.0.0"
             },
             "time": "2021-08-09T15:28:56+00:00"
+        },
+        {
+            "name": "shopify/shopify-laravel-provider",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "ssh://git@github.com/Shopify/shopify-laravel-provider.git",
+                "reference": "a53b59519f995d6bdc229b3275f532ffe489b79b"
+            },
+            "require": {
+                "shopify/shopify-api": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Shopify\\ShopifyLaravelProvider\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shopify Inc.",
+                    "email": "dev-tools-education@shopify.com"
+                }
+            ],
+            "description": "Laravel service provider for Shopify API library",
+            "time": "2021-10-12T15:55:05+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -7987,12 +8016,14 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "shopify/shopify-laravel-provider": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3 || ^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
