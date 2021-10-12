@@ -2916,15 +2916,22 @@
             "source": {
                 "type": "git",
                 "url": "ssh://git@github.com/Shopify/shopify-laravel-provider.git",
-                "reference": "a53b59519f995d6bdc229b3275f532ffe489b79b"
+                "reference": "7732e0df175faaec5f8e86e97b6fa7a35e407c68"
             },
             "require": {
                 "shopify/shopify-api": "^1.0"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Shopify\\Laravel\\ApiServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Shopify\\ShopifyLaravelProvider\\": "src/"
+                    "Shopify\\Laravel\\": "src/"
                 }
             },
             "license": [
@@ -2937,7 +2944,7 @@
                 }
             ],
             "description": "Laravel service provider for Shopify API library",
-            "time": "2021-10-12T15:55:05+00:00"
+            "time": "2021-10-12T17:33:52+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

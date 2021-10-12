@@ -30,16 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Context::initialize(
-        //     env('SHOPIFY_API_KEY'),
-        //     env('SHOPIFY_API_SECRET'),
-        //     env('SCOPES'),
-        //     str_replace('https://', '', env('HOST')),
-        //     new DbSessionStorage()
-        // );
-
-        // URL::forceScheme('https');
-
         // Registry::addHandler(Topics::APP_UNINSTALLED, new AppUninstalled());
     }
 }
