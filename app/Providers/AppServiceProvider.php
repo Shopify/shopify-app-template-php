@@ -30,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // We force this because even though Ngrok will come over HTTPS, Laravel sees it as HTTP and will mix content.
+        // If you have certificates configured with your local dev url, this is not necessary.
+        URL::forceScheme('https');
         // Registry::addHandler(Topics::APP_UNINSTALLED, new AppUninstalled());
     }
 }
