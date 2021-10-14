@@ -57,18 +57,3 @@ Route::get('/rest-example', function (Request $request) {
 
     return response($result->getDecodedBody());
 })->middleware('shopify.auth:online');
-
-Route::post('/webhooks', function (Request $request) {
-    try {
-        $topic = $request->header(HttpHeaders::X_SHOPIFY_TOPIC, '');
-
-        $response = Registry::process($request->header(), $request->getContent());
-        if (!$response->isSuccess()) {
-            Log::error("Failed to process '$topic' webhook: {$response->getErrorMessage()}");
-            return response()->json(['message' => "Failed to process '$topic' webhook"], 500);
-        }
-    } catch (\Exception $e) {
-        Log::error("Got an exception when handling '$topic' webhook: {$e->getMessage()}");
-        return response()->json(['message' => "Got an exception when handling '$topic' webhook"], 500);
-    }
-});
