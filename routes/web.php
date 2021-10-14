@@ -27,13 +27,6 @@ use Shopify\Webhooks\Topics;
 */
 
 
-
-
-
-
-
-
-
 Route::post('/graphql', function (Request $request) {
     $response = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
 
