@@ -3,7 +3,6 @@
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Shopify\Auth\OAuth;
@@ -65,27 +64,18 @@ Route::get('/login', function (Request $request) {
         $shop,
         '/auth/callback',
         true,
-        function (Shopify\Auth\OAuthCookie $cookie) {
-            Cookie::queue(
-                $cookie->getName(),
-                $cookie->getValue(),
-                ceil(($cookie->getExpire() - time()) / 60),
-                '/',
-                Context::$HOST_NAME,
-                $cookie->isSecure(),
-                $cookie->isHttpOnly(),
-                false,
-                'Lax'
-            );
-            return true;
-        }
+        ['App\Lib\CookieHandler', 'saveShopifyCookie'],
     );
 
     return redirect($installUrl);
 });
 
 Route::get('/auth/callback', function (Request $request) {
-    $session = OAuth::callback($request->cookie(), $request->query());
+    $session = OAuth::callback(
+        $request->cookie(),
+        $request->query(),
+        ['App\Lib\CookieHandler', 'saveShopifyCookie'],
+    );
 
     $host = $request->query('host');
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
