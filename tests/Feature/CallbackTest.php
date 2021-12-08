@@ -84,8 +84,10 @@ class CallbackTest extends BaseTestCase
 
         $query = $this->requestQueryParameters();
 
+        $signature = hash_hmac('sha256', $offlineSession->getId(), Context::$API_SECRET_KEY);
         $response = $this
             ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $offlineSession->getId())
+            ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature)
             ->get("/auth/callback?$query");
 
         $response->assertStatus(302);
@@ -147,8 +149,10 @@ class CallbackTest extends BaseTestCase
 
         $query = $this->requestQueryParameters();
 
+        $signature = hash_hmac('sha256', $onlineSession->getId(), Context::$API_SECRET_KEY);
         $response = $this
             ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $onlineSession->getId())
+            ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature)
             ->get("/auth/callback?$query");
 
         $response->assertRedirect(

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Lib\DbSessionStorage;
 use App\Lib\Handlers\AppUninstalled;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Shopify\Context;
@@ -30,15 +31,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        URL::forceScheme('https');
+
+        // We can safely skip the next parts when running from the CLI (namely, from artisan) since they only matter in
+        // HTTP requests or testing
+        if (App::runningInConsole() && App::environment() !== "testing") {
+            return;
+        }
+
         Context::initialize(
-            env('SHOPIFY_API_KEY'),
-            env('SHOPIFY_API_SECRET'),
-            env('SCOPES'),
-            str_replace('https://', '', env('HOST')),
+            env('SHOPIFY_API_KEY', ''),
+            env('SHOPIFY_API_SECRET', ''),
+            env('SCOPES', ''),
+            str_replace('https://', '', env('HOST', '')),
             new DbSessionStorage()
         );
-
-        URL::forceScheme('https');
 
         Registry::addHandler(Topics::APP_UNINSTALLED, new AppUninstalled());
     }

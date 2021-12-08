@@ -89,8 +89,10 @@ class ProxyGraphqlTest extends BaseTestCase
             $token = $this->encodeJwtPayload();
             $headers['Authorization'] = "Bearer $token";
         } else {
+            $signature = hash_hmac('sha256', $sessionId, Context::$API_SECRET_KEY);
             $request->withCredentials()
-                ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId);
+                ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId)
+                ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature);
         }
 
         $response = $request->json('POST', "/graphql", json_decode($testGraphqlQuery, true), $headers);
