@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class DbSessionStorage implements SessionStorage
 {
-
     public function loadSession(string $sessionId): ?Session
     {
         $dbSession = \App\Models\Session::where('session_id', $sessionId)->first();
