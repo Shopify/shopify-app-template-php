@@ -58,15 +58,13 @@ class ProxyGraphqlTest extends BaseTestCase
                     // For some reason this callback is being run twice, so we need to make sure to rewind the body
                     // stream before grabbing the contents to test.
                     $request->getBody()->rewind();
-                    return (
-                        $request->getUri() == $graphqlUrl
+                    return ($request->getUri() == $graphqlUrl
                         && $request->getBody()->getContents() === EnsureShopifySession::TEST_GRAPHQL_QUERY
                     );
                 })],
                 [$this->callback(function ($request) use ($testGraphqlQuery, $graphqlUrl) {
                     $request->getBody()->rewind();
-                    return (
-                        $request->getUri() == $graphqlUrl
+                    return ($request->getUri() == $graphqlUrl
                         && $request->getBody()->getContents() === $testGraphqlQuery
                     );
                 })],
@@ -89,8 +87,10 @@ class ProxyGraphqlTest extends BaseTestCase
             $token = $this->encodeJwtPayload();
             $headers['Authorization'] = "Bearer $token";
         } else {
+            $signature = hash_hmac('sha256', $sessionId, Context::$API_SECRET_KEY);
             $request->withCredentials()
-                ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId);
+                ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $sessionId)
+                ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature);
         }
 
         $response = $request->json('POST', "/graphql", json_decode($testGraphqlQuery, true), $headers);
