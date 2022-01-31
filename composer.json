@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0 || ^8.1",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -46,6 +46,8 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
+        "serve": "php artisan serve",
+        "react": "npm run watch",
         "test": "php artisan test --env=testing",
         "lint": "./vendor/bin/phpcs --standard=PSR12 app tests routes"
     },

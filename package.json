@@ -11,8 +11,8 @@
         "build": "npm run production"
     },
     "dependencies": {
-        "@babel/preset-react": "^7.13.13",
         "@apollo/client": "^3.3.16",
+        "@babel/preset-react": "^7.13.13",
         "@shopify/app-bridge": "^2.0.2",
         "@shopify/app-bridge-react": "^2.0.2",
         "@shopify/app-bridge-utils": "^2.0.2",
@@ -26,5 +26,8 @@
         "react-dom": "^16.14.0",
         "react-router-dom": "^5.2.0"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+        "react-refresh": "^0.11.0"
+    }
 }
