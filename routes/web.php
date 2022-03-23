@@ -30,16 +30,21 @@ Route::fallback(function (Request $request) {
     $host = $request->query('host');
     $appInstalled = Session::where('shop', $shop)->exists();
     if ($appInstalled) {
-        return view('react', [
-            'shop' => $shop,
-            'host' => $host,
-            'apiKey' => Context::$API_KEY
-        ]);
+        if (env('APP_ENV') === 'production') {
+            return file_get_contents(dirname(__FILE__) . '../frontend/dist/index.html');
+        } else {
+            return file_get_contents(dirname(__FILE__) . '../frontend/index.html');
+        }
+        // return view('react', [
+        //     'shop' => $shop,
+        //     'host' => $host,
+        //     'apiKey' => Context::$API_KEY
+        // ]);
     }
-    return redirect("/login?shop=$shop");
+    return redirect("/api/login?shop=$shop");
 });
 
-Route::get('/login/toplevel', function (Request $request, Response $response) {
+Route::get('/api/login/toplevel', function (Request $request, Response $response) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
     $response = new Response(view('top_level', [
@@ -53,16 +58,16 @@ Route::get('/login/toplevel', function (Request $request, Response $response) {
     return $response;
 });
 
-Route::get('/login', function (Request $request) {
+Route::get('/api/login', function (Request $request) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
     if (!$request->hasCookie('shopify_top_level_oauth')) {
-        return redirect("/login/toplevel?shop=$shop");
+        return redirect("/api/login/toplevel?shop=$shop");
     }
 
     $installUrl = OAuth::begin(
         $shop,
-        '/auth/callback',
+        '/api/auth/callback',
         true,
         ['App\Lib\CookieHandler', 'saveShopifyCookie'],
     );
@@ -70,7 +75,7 @@ Route::get('/login', function (Request $request) {
     return redirect($installUrl);
 });
 
-Route::get('/auth/callback', function (Request $request) {
+Route::get('/api/auth/callback', function (Request $request) {
     $session = OAuth::callback(
         $request->cookie(),
         $request->query(),
@@ -80,20 +85,20 @@ Route::get('/auth/callback', function (Request $request) {
     $host = $request->query('host');
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
-    $response = Registry::register('/webhooks', Topics::APP_UNINSTALLED, $shop, $session->getAccessToken());
+    $response = Registry::register('/api/webhooks', Topics::APP_UNINSTALLED, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
         Log::debug("Registered APP_UNINSTALLED webhook for shop $shop");
     } else {
         Log::error(
             "Failed to register APP_UNINSTALLED webhook for shop $shop with response body: " .
-            print_r($response->getBody(), true)
+                print_r($response->getBody(), true)
         );
     }
 
     return redirect("?" . http_build_query(['host' => $host, 'shop' => $shop]));
 });
 
-Route::post('/graphql', function (Request $request) {
+Route::post('/api/graphql', function (Request $request) {
     $response = Utils::graphqlProxy($request->header(), $request->cookie(), $request->getContent());
 
     $xHeaders = array_filter(
@@ -107,17 +112,17 @@ Route::post('/graphql', function (Request $request) {
     return response($response->getDecodedBody(), $response->getStatusCode())->withHeaders($xHeaders);
 })->middleware('shopify.auth:online');
 
-Route::get('/rest-example', function (Request $request) {
+Route::get('/api/products-count', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
 
     $client = new Rest($session->getShop(), $session->getAccessToken());
-    $result = $client->get('products', [], ['limit' => 5]);
+    $result = $client->get('products/count');
 
     return response($result->getDecodedBody());
 })->middleware('shopify.auth:online');
 
-Route::post('/webhooks', function (Request $request) {
+Route::post('/api/webhooks', function (Request $request) {
     try {
         $topic = $request->header(HttpHeaders::X_SHOPIFY_TOPIC, '');
 

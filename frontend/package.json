@@ -1,5 +1,6 @@
 {
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
@@ -11,20 +12,20 @@
         "build": "npm run production"
     },
     "dependencies": {
-        "@apollo/client": "^3.3.16",
-        "@babel/preset-react": "^7.13.13",
-        "@shopify/app-bridge": "^2.0.2",
-        "@shopify/app-bridge-react": "^2.0.2",
-        "@shopify/app-bridge-utils": "^2.0.2",
-        "@shopify/polaris": "^6.4.0",
+        "@apollo/client": "^3.5.10",
+        "@shopify/app-bridge": "^2.0.19",
+        "@shopify/app-bridge-react": "^2.0.19",
+        "@shopify/app-bridge-utils": "^2.0.19",
+        "@shopify/polaris": "^9.2.2",
+        "@vitejs/plugin-react": "^1.2.0",
         "axios": "^0.21",
+        "dotenv": "^16.0.0",
         "graphql": "^15.5.0",
-        "laravel-mix": "^6.0.19",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
-        "react-router-dom": "^5.2.0"
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "vite": "^2.8.6"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
