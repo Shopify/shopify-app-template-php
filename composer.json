@@ -47,7 +47,7 @@
             "@php artisan key:generate --ansi"
         ],
         "serve": "php artisan serve",
-        "react": "npm run watch",
+        "react": "cd frontend && yarn dev",
         "test": "php artisan test --env=testing",
         "lint": "./vendor/bin/phpcs --standard=PSR12 app tests routes"
     },

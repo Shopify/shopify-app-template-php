@@ -26,14 +26,14 @@ use Shopify\Webhooks\Topics;
 */
 
 Route::fallback(function (Request $request) {
-    $shop = Utils::sanitizeShopDomain($request->query('shop'));
+    $shop = $request->query('shop') ? Utils::sanitizeShopDomain($request->query('shop')) : null;
     $host = $request->query('host');
     $appInstalled = Session::where('shop', $shop)->exists();
     if ($appInstalled) {
         if (env('APP_ENV') === 'production') {
-            return file_get_contents(dirname(__FILE__) . '../frontend/dist/index.html');
+            return file_get_contents(public_path('index.html'));
         } else {
-            return file_get_contents(dirname(__FILE__) . '../frontend/index.html');
+            return file_get_contents(base_path('frontend/index.html'));
         }
         // return view('react', [
         //     'shop' => $shop,
