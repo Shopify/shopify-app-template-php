@@ -1,0 +1,2 @@
+[commands]
+dev = "composer serve"
