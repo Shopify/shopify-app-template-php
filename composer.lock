@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed76a847ee83e9103ec3b4b687a92067",
+    "content-hash": "c86ee1697fea0f6db3f902cca3bb5b65",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3297,22 +3297,23 @@
         },
         {
             "name": "shopify/shopify-api",
-            "version": "v1.0.1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Shopify/shopify-php-api.git",
-                "reference": "a5238ef6b15e457d6a8c581940f6c74474914041"
+                "reference": "8506b85702194f76df67160cb884b07387c21ac2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/a5238ef6b15e457d6a8c581940f6c74474914041",
-                "reference": "a5238ef6b15e457d6a8c581940f6c74474914041",
+                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/8506b85702194f76df67160cb884b07387c21ac2",
+                "reference": "8506b85702194f76df67160cb884b07387c21ac2",
                 "shasum": ""
             },
             "require": {
+                "doctrine/inflector": "^2.0",
                 "firebase/php-jwt": "^5.2",
                 "guzzlehttp/guzzle": "^7.0",
-                "php": "^7.3 || ^8.0",
+                "php": "^7.4 || ^8.0 || ^8.1",
                 "psr/http-client": "^1.0",
                 "psr/log": "^1.1",
                 "ramsey/uuid": "^4.1"
@@ -3352,9 +3353,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Shopify/shopify-php-api/issues",
-                "source": "https://github.com/Shopify/shopify-php-api/tree/v1.0.1"
+                "source": "https://github.com/Shopify/shopify-php-api/tree/v2.0.0"
             },
-            "time": "2021-11-30T16:25:06+00:00"
+            "time": "2022-04-04T14:20:31+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
