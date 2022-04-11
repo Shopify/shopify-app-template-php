@@ -3297,16 +3297,16 @@
         },
         {
             "name": "shopify/shopify-api",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Shopify/shopify-php-api.git",
-                "reference": "8506b85702194f76df67160cb884b07387c21ac2"
+                "reference": "0556edf274ceb83346533bd22b662d7622e58c66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/8506b85702194f76df67160cb884b07387c21ac2",
-                "reference": "8506b85702194f76df67160cb884b07387c21ac2",
+                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/0556edf274ceb83346533bd22b662d7622e58c66",
+                "reference": "0556edf274ceb83346533bd22b662d7622e58c66",
                 "shasum": ""
             },
             "require": {
@@ -3353,9 +3353,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Shopify/shopify-php-api/issues",
-                "source": "https://github.com/Shopify/shopify-php-api/tree/v2.0.0"
+                "source": "https://github.com/Shopify/shopify-php-api/tree/v2.0.1"
             },
-            "time": "2022-04-04T14:20:31+00:00"
+            "time": "2022-04-11T17:51:03+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
