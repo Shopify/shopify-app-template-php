@@ -15,7 +15,7 @@ class RootTest extends TestCase
     {
         $response = $this->get("?shop=test-shop.myshopify.io");
         $response->assertStatus(302);
-        $response->assertRedirect("/login?shop=test-shop.myshopify.io");
+        $response->assertRedirect("/api/auth?shop=test-shop.myshopify.io");
     }
 
     public function testReturn200IfShopIsAlreadyInstalled()

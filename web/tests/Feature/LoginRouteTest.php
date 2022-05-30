@@ -17,11 +17,11 @@ class LoginRouteTest extends TestCase
         $queryParameters = [
             'client_id' => Context::$API_KEY,
             'scope' => Context::$SCOPES->toString(),
-            'redirect_uri' => 'https://' . Context::$HOST_NAME . '/auth/callback',
+            'redirect_uri' => 'https://' . Context::$HOST_NAME . '/api/auth/callback',
             'grant_options' => ['per-user']
         ];
 
-        $response = $this->withCookie('shopify_top_level_oauth', '1')->get("/login?shop=myshop");
+        $response = $this->withCookie('shopify_top_level_oauth', '1')->get("/api/auth?shop=myshop");
         $response->assertStatus(302);
 
         $newLocation = $response->headers->get('Location');
@@ -39,11 +39,11 @@ class LoginRouteTest extends TestCase
 
     public function testLoginRouteRedirectsToTopLevel()
     {
-        $response = $this->get("/login?shop=myshop");
+        $response = $this->get("/api/auth?shop=myshop");
         $response->assertStatus(302);
 
         $response->assertRedirect(
-            'https://' . Context::$HOST_NAME . "/login/toplevel?shop=myshop.myshopify.com",
+            'https://' . Context::$HOST_NAME . "/api/auth/toplevel?shop=myshop.myshopify.com",
         );
     }
 }

@@ -53,7 +53,7 @@ class EnsureShopifySession
 
         if ($session && $shop && $session->getShop() !== $shop) {
             // This request is for a different shop. Go straight to login
-            return redirect("/login?shop=$shop");
+            return redirect("/api/auth?shop=$shop");
         }
 
         if ($session && $session->isValid()) {
@@ -83,10 +83,10 @@ class EnsureShopifySession
 
             return response('', 401, [
                 self::REDIRECT_HEADER => '1',
-                self::REDIRECT_URL_HEADER => "/login?shop=$shop",
+                self::REDIRECT_URL_HEADER => "/api/auth?shop=$shop",
             ]);
         } else {
-            return redirect("/login?shop=$shop");
+            return redirect("/api/auth?shop=$shop");
         }
     }
 }
