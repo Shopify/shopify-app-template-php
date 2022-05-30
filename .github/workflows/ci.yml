@@ -1,0 +1,36 @@
+on: [push, pull_request]
+name: CI
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    env:
+      PHP_INI_VALUES: assert.exception=1, zend.assertions=1
+      SHOPIFY_API_KEY: test-api-key
+      SHOPIFY_API_SECRET: test-secret-key
+      SCOPES: read_products,write_products
+      HOST: app-host-name.com
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2, phpcs
+          ini-values: ${{ env.PHP_INI_VALUES }}
+
+      - name: Install dependencies with composer
+        run: composer update --no-ansi --no-interaction --no-progress
+
+      - name: Run linter
+        run: composer lint
+
+      - name: Run tests
+        run: composer test
