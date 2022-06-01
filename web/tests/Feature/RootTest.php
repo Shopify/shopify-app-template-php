@@ -31,7 +31,7 @@ class RootTest extends TestCase
 
         $response = $this->get("?shop=test-shop.myshopify.io");
         $response->assertStatus(200);
-        $response->assertViewIs('react');
+        $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     }
 
     public function testUncaughtRequestsTriggerRouteBehaviour()
@@ -47,6 +47,6 @@ class RootTest extends TestCase
 
         $response = $this->get("/not-a-real-endpoint?shop=test-shop.myshopify.io");
         $response->assertStatus(200);
-        $response->assertViewIs('react');
+        $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     }
 }
