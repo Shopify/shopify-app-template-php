@@ -46,10 +46,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "serve": "php artisan serve",
+        "serve": "php artisan serve --port=\"${BACKEND_PORT:-$PORT}\"",
         "react": "npm run watch",
         "test": "php artisan test --env=testing",
-        "lint": "./vendor/bin/phpcs --standard=PSR12 app tests routes"
+        "lint": "./vendor/bin/phpcs --standard=PSR12 app tests routes",
+        "build-frontend-links": "ln -sf ../frontend/dist/assets public/assets && ln -sf ../frontend/dist/index.html public/index.html"
     },
     "extra": {
         "laravel": {
