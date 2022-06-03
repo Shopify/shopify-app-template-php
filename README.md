@@ -69,7 +69,9 @@ This will clone the template and install the CLI in that project.
 
 ### Setting up your Laravel app
 
-Once the Shopify CLI clones the repo, you will be able to run commands on your app. However, the CLI will not manage your PHP dependencies automatically, so you will need to go through some steps to be able to run your app. These are the typical steps needed to set up a Laravel app once it's cloned:
+Once the Shopify CLI clones the repo, you will be able to run commands on your app.
+However, the CLI will not manage your PHP dependencies automatically, so you will need to go through some steps to be able to run your app.
+These are the typical steps needed to set up a Laravel app once it's cloned:
 
 1. Start off by switching to the `web` folder:
     ```shell
@@ -105,9 +107,11 @@ cd ..
 
 ### Local Development
 
-[The Shopify CLI](https://shopify.dev/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
+[The Shopify CLI](https://shopify.dev/apps/tools/cli) connects to an app in your Partners dashboard.
+It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
 
-You can develop locally using your preferred Node.js package manager. Run one of the following commands from the root of your app:
+You can develop locally using your preferred Node.js package manager.
+Run one of the following commands from the root of your app:
 
 Using yarn:
 
@@ -163,13 +167,17 @@ cd web/frontend && pnpm run test
 
 ### Application Storage
 
-This template uses [Laravel's Eloquent framework](https://laravel.com/docs/9.x/eloquent) to store Shopify session data. It provides migrations to create the necessary tables in your database, and it stores and loads session data from them.
+This template uses [Laravel's Eloquent framework](https://laravel.com/docs/9.x/eloquent) to store Shopify session data.
+It provides migrations to create the necessary tables in your database, and it stores and loads session data from them.
 
-The database that works best for you depends on the data your app needs and how it is queried. You can run your database of choice on a server yourself or host it with a SaaS company. Once you decide which database to use, you can update your Laravel app's `DB_*` environment variables to connect to it, and this template will start using that database for session storage.
+The database that works best for you depends on the data your app needs and how it is queried.
+You can run your database of choice on a server yourself or host it with a SaaS company.
+Once you decide which database to use, you can update your Laravel app's `DB_*` environment variables to connect to it, and this template will start using that database for session storage.
 
 ### Build
 
-The frontend is a single page React app. It requires the `SHOPIFY_API_KEY` environment variable, which you can find on the page for your app in your partners dashboard. The CLI will set up the necessary environment variables for the build if you run its `build` command from your app's root:
+The frontend is a single page React app. It requires the `SHOPIFY_API_KEY` environment variable, which you can find on the page for your app in your partners dashboard.
+The CLI will set up the necessary environment variables for the build if you run its `build` command from your app's root:
 
 Using yarn:
 
@@ -192,6 +200,9 @@ pnpm run build --api-key=REPLACE_ME
 You do not need to build the backend.
 
 ## Hosting
+
+Before you host your app in a production environment, make sure to create the production app in your Partner's Dashboard.
+You'll need to set up the API key and API secret for your production environment, as per the instructions below.
 
 The following pages document the basic steps to host and deploy your application to a few popular cloud providers:
 

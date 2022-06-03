@@ -11,86 +11,83 @@ git commit -m "Initial version"
 
 ## Create and login to a Heroku account
 
-<table>
-  <tr>
-    <td>1.</td>
-    <td>Go to <a href="https://heroku.com">heroku.com</a> and click on <em>Sign up</em></td>
-  </tr>
-  <tr>
-    <td>2.</td>
-    <td><a herf="https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli">Download and install</a> the Heroku CLI</td>
-  </tr>
-  <tr>
-    <td>3.</td>
-    <td>Login to the Heroku CLI using <code>heroku login</code></td>
-  </tr>
-</table>
+1. Go to [heroku.com](https://heroku.com) and click on _Sign up_
+1. [Download and install](https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli) the Heroku CLI
+1. Login to the Heroku CLI using `heroku login`
 
 ## Build and deploy from Git repo
 
-<table>
-  <tr>
-    <td>4.</td>
-    <td>Create an app in Heroku using <code>heroku create -a my-app-name</code>. This will create a git remote named <code>heroku</code> for deploying the app to Heroku.  It will also return the URL to where the app will run when deployed, in the form of<br><code>https://my-app-name.herokuapp.com</code></td>
-  </tr>
-  <tr>
-    <td>5.</td>
-    <td>At the top-level directory of your app's source code, create a <code>Procfile</code> that includes the instruction Heroku needs to start your app and commit it to your git repository.
-    <pre>
-echo "web: cd web && npm run serve" > Procfile
-git add Procfile
-git commit -m "Add start command for Heroku"</pre>
-    </td>
-  </tr>
-  <tr>
-    <td>6.</td>
-    <td>From the <a href="https://dashboard.heroku.com/apps">Heroku apps dashboard</a>, select the app, select <em>Settings</em> and add the environment variables <code>SHOPIFY_API_KEY</code>, <code>SHOPIFY_API_SECRET</code>, <code>HOST</code> and <code>SCOPES</code> to Heroku in <em>Config Vars</em>.  These can also be set using the CLI, for example:
-    <pre>
-heroku config:set SHOPIFY_API_KEY=ReplaceWithKEYFromPartnerDashboard
-heroku config:set SHOPIFY_API_SECRET=ReplaceWithSECRETFromPartnerDashboard
-heroku config:set HOST=https://my-app-name.herokuapp.com
-heroku config:set SCOPES=write_products
-</pre>Note that these commands can be combined into a single command:
-<pre>
-heroku config:set SHOPIFY_API_KEY=... SHOPIFY_API_SECRET=... HOST=... SCOPES=...
-</pre>
-    </td>
-  </tr>
-  <tr>
-    <td>7.</td>
-    <td>Push the app to Heroku: <code>git push heroku main</code>.  This will automatically deploy the app.</td>
-  </tr>
-</table>
+1. Create an app in Heroku using `heroku create -a my-app-name`. This will create a git remote named `heroku` for deploying the app to Heroku. It will also return the URL to where the app will run when deployed, in the form of:
+
+    ```text
+    https://my-app-name.herokuapp.com
+    ```
+
+1. Inside the `web` directory of your app's source code, create a `Procfile` that includes the instruction Heroku needs to start your app and commit it to your git repository.
+
+    ```shell
+    cd web
+    echo "web: vendor/bin/heroku-php-nginx -C public/nginx.conf public/
+    release: bash ./heroku-release.sh" > Procfile
+    git add Procfile
+    git commit -m "Add start command for Heroku"
+    ```
+
+1. From the [Heroku apps dashboard](https://dashboard.heroku.com/apps), select the app, select _Settings_ and add the environment variables `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `HOST` and `SCOPES` to Heroku in _Config Vars_.
+   You'll also need to set the `PROJECT_PATH` variable so that your app runs on `web`.
+   These can also be set using the CLI, for example:
+
+    ```shell
+    heroku config:set SHOPIFY_API_KEY=ReplaceWithKEYFromPartnerDashboard
+    heroku config:set SHOPIFY_API_SECRET=ReplaceWithSECRETFromPartnerDashboard
+    heroku config:set HOST=https://my-app-name.herokuapp.com
+    heroku config:set SCOPES=write_products
+    heroku config:set PROJECT_PATH=web
+    ```
+
+    Note that these commands can be combined into a single command:
+
+    ```shell
+    heroku config:set SHOPIFY_API_KEY=... SHOPIFY_API_SECRET=... HOST=... SCOPES=...
+    ```
+
+1. Set up the necessary buildpacks:
+
+    ```shell
+    heroku buildpacks:clear
+    heroku buildpacks:add https://github.com/timanovsky/subdir-heroku-buildpack.git # So the Heroku app runs from web
+    heroku buildpacks:add heroku/php
+    ```
+
+    **NOTE**: Heroku's PHP buildpack
+
+1. Push the app to Heroku: `git push heroku master`. This will automatically deploy the app.
 
 ## Update URLs in Partner Dashboard
 
-<table>
-  <tr>
-    <td>8.</td>
-    <td>Update main and callback URLs in Partner Dashboard to point to new app.  The main app URL should point to <br><code>https://my-app-name.herokuapp.com</code><br> and the callback URL should be<br><code>https://my-app-name.herokuapp.com/api/auth/callback</code></td>
-  </tr>
-</table>
+1. Update main and callback URLs in Partner Dashboard to point to new app. The main app URL should point to
+
+    ```text
+    https://my-app-name.herokuapp.com
+    ```
+
+    and the callback URL should be
+
+    ```text
+    https://my-app-name.herokuapp.com/api/auth/callback
+    ```
 
 ## Test the app
 
-<table>
-  <tr>
-    <td>9.</td>
-    <td>Open the deployed app by browsing to<br><code>https://my-app-name.herokuapp.com/api/auth?shop=my-dev-shop-name.myshopify.com</code></td>
-  </tr>
-</table>
+Open the deployed app by browsing to:
+
+```text
+https://my-app-name.herokuapp.com/api/auth?shop=my-dev-shop-name.myshopify.com
+```
 
 ## Deploy a new version of the app
 
-<table>
-  <tr>
-    <td>1.</td>
-    <td>Update code and commit to git.  If updates were made on a branch, merge branch with <code>main</code>.</td>
-  </tr>
-  <tr>
-    <td>2.</td>
-    <td>Push <code>main</code> to Heroku: <code>git push heroku main</code> - this will automatically deploy the new version of your app.</td>
-  </tr>
-</table>
+1. Update code and commit to git. If updates were made on a branch, merge branch with `main`.
+1. Push `main` to Heroku: `git push heroku main` - this will automatically deploy the new version of your app.
 
 > Heroku's dynos should restart automatically after setting the environment variables or pushing a new update from git. If you need to restart the dynos manually, use `heroku ps:restart`.
