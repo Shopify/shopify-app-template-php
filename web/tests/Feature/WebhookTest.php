@@ -35,7 +35,7 @@ class WebhookTest extends BaseTestCase
         $hmac = base64_encode(hash_hmac('sha256', json_encode($body), Context::$API_SECRET_KEY, true));
         $response = $this->json(
             'POST',
-            "/webhooks",
+            "/api/webhooks",
             $body,
             [
                 HttpHeaders::X_SHOPIFY_TOPIC => $topic,

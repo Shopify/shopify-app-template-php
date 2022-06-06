@@ -9,6 +9,7 @@ jobs:
       SHOPIFY_API_SECRET: test-secret-key
       SCOPES: read_products,write_products
       HOST: app-host-name.com
+      APP_ENV: local
     strategy:
       fail-fast: false
       matrix:
@@ -16,8 +17,13 @@ jobs:
           - "7.4"
           - "8.0"
           - "8.1"
+    defaults:
+      run:
+        working-directory: ./web
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2

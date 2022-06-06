@@ -88,7 +88,7 @@ class CallbackTest extends BaseTestCase
         $response = $this
             ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $offlineSession->getId())
             ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature)
-            ->get("/auth/callback?$query");
+            ->get("/api/auth/callback?$query");
 
         $response->assertStatus(302);
         $response->assertRedirect(
@@ -153,7 +153,7 @@ class CallbackTest extends BaseTestCase
         $response = $this
             ->withCookie(OAuth::SESSION_ID_COOKIE_NAME, $onlineSession->getId())
             ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature)
-            ->get("/auth/callback?$query");
+            ->get("/api/auth/callback?$query");
 
         $response->assertRedirect(
             "?" . http_build_query(['host' => base64_encode($this->domain . "/admin"), 'shop' => $this->domain])

@@ -93,7 +93,7 @@ class ProxyGraphqlTest extends BaseTestCase
                 ->withCookie(OAuth::SESSION_ID_SIG_COOKIE_NAME, $signature);
         }
 
-        $response = $request->json('POST', "/graphql", json_decode($testGraphqlQuery, true), $headers);
+        $response = $request->json('POST', "/api/graphql", json_decode($testGraphqlQuery, true), $headers);
 
         $response->assertStatus(201);
         $response->assertExactJson($testGraphqlResponse);
