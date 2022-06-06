@@ -34,7 +34,8 @@ git commit -m "Initial version"
     ```
 
 1. From the [Heroku apps dashboard](https://dashboard.heroku.com/apps), select the app, select _Settings_ and add the environment variables `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `HOST` and `SCOPES` to Heroku in _Config Vars_.
-   You'll also need to set the `PROJECT_PATH` variable so that your app runs on `web`.
+   You'll also need to set the `PROJECT_PATH` variable so that your app runs on `web`, and your preferred database.
+   You'll set your database URI to `DB_DATABASE`.
    These can also be set using the CLI, for example:
 
     ```shell
@@ -42,7 +43,6 @@ git commit -m "Initial version"
     heroku config:set SHOPIFY_API_SECRET=ReplaceWithSECRETFromPartnerDashboard
     heroku config:set HOST=https://my-app-name.herokuapp.com
     heroku config:set SCOPES=write_products
-    heroku config:set PROJECT_PATH=web
     ```
 
     Note that these commands can be combined into a single command:
@@ -50,16 +50,6 @@ git commit -m "Initial version"
     ```shell
     heroku config:set SHOPIFY_API_KEY=... SHOPIFY_API_SECRET=... HOST=... SCOPES=...
     ```
-
-1. Set up the necessary buildpacks:
-
-    ```shell
-    heroku buildpacks:clear
-    heroku buildpacks:add https://github.com/timanovsky/subdir-heroku-buildpack.git # So the Heroku app runs from web
-    heroku buildpacks:add heroku/php
-    ```
-
-    **NOTE**: Heroku's PHP buildpack
 
 1. Push the app to Heroku: `git push heroku master`. This will automatically deploy the app.
 
