@@ -1,8 +1,6 @@
 {
   "name": "shopify-app-template-php",
   "version": "1.0.0",
-  "repository": "https://github.com/Shopify/shopify-app-template-php.git",
-  "author": "Paulo Margarido <64600052+paulomarg@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
     "shopify": "shopify",
