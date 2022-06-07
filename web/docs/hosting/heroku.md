@@ -23,35 +23,70 @@ git commit -m "Initial version"
     https://my-app-name.herokuapp.com
     ```
 
-1. Inside the `web` directory of your app's source code, create a `Procfile` that includes the instruction Heroku needs to start your app and commit it to your git repository.
+1. Make sure your Docker entrypoint script is executable:
 
     ```shell
-    cd web
-    echo "web: vendor/bin/heroku-php-nginx -C public/nginx.conf public/
-    release: bash ./heroku-release.sh" > Procfile
-    git add Procfile
-    git commit -m "Add start command for Heroku"
+    chmod +x web/entrypoint.sh
     ```
 
-1. From the [Heroku apps dashboard](https://dashboard.heroku.com/apps), select the app, select _Settings_ and add the environment variables `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `HOST` and `SCOPES` to Heroku in _Config Vars_.
-   You'll also need to set the `PROJECT_PATH` variable so that your app runs on `web`, and your preferred database.
-   You'll set your database URI to `DB_DATABASE`.
-   These can also be set using the CLI, for example:
+1. In your app's root directory, create a `heroku.yml` file that contains instructions for building your Heroku app:
 
     ```shell
-    heroku config:set SHOPIFY_API_KEY=ReplaceWithKEYFromPartnerDashboard
-    heroku config:set SHOPIFY_API_SECRET=ReplaceWithSECRETFromPartnerDashboard
-    heroku config:set HOST=https://my-app-name.herokuapp.com
-    heroku config:set SCOPES=write_products
+    build:
+        docker:
+            web: web/Dockerfile
+        config:
+            SHOPIFY_API_KEY: 8d796e39b66b3a14e34f84a9f09b63c0
     ```
 
-    Note that these commands can be combined into a single command:
+1. Generate a new App key for Laravel:
 
     ```shell
-    heroku config:set SHOPIFY_API_KEY=... SHOPIFY_API_SECRET=... HOST=... SCOPES=...
+    php web/artisan key:generate --show
     ```
 
-1. Push the app to Heroku: `git push heroku master`. This will automatically deploy the app.
+1. Set up the necessary environment variables to run in your app using the `heroku config:set` command. All the variables below should be set using a command like
+
+    ```shell
+    heroku config:set <VARIABLE>="<value>"
+    ```
+
+    Shopify app values:
+    |Variable|Description/value|
+    |-|-|
+    |`SHOPIFY_API_KEY`|API key for your app, from the Partners Dashboard|
+    |`SHOPIFY_API_SECRET`|API secret key for your app, from the Partners Dashboard|
+    |`SCOPES`|Comma-separated scopes for your app|
+    |`HOST`|`my-app-name.herokuapp.com`|
+
+    Laravel values (note you can change the `DB_*` values if using a different database):
+    |Variable|Description/value|
+    |-|-|
+    |`APP_NAME`|App name for Laravel|
+    |`APP_ENV`|`production`|
+    |`APP_KEY`|The string produced by the previous step's command|
+    |`DB_CONNECTION`|`sqlite`|
+    |`DB_FOREIGN_KEYS`|`true`|
+    |`DB_DATABASE`|`/app/storage/db.sqlite`|
+
+1. Add the Heroku config file to your git repo:
+
+    ```shell
+    git add heroku.yml
+    git commit -m "Adding Heroku config file"
+    ```
+
+1. Set the stack of your app to `container`:
+
+    ```shell
+    heroku stack:set container
+    ```
+
+1. Push the app to Heroku. This will automatically deploy the app.
+
+    ```shell
+    git push heroku main
+    ```
 
 ## Update URLs in Partner Dashboard
 
