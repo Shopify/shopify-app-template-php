@@ -20,6 +20,7 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN rm -rf vendor && composer install
 RUN echo "" > /app/storage/db.sqlite
+RUN chown www-data:www-data /app/storage/db.sqlite
 
 RUN cd frontend && rm -rf node_modules && npm install && rm -rf dist && npm run build
 RUN composer build

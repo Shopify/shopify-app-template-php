@@ -23,12 +23,6 @@ git commit -m "Initial version"
     https://my-app-name.herokuapp.com
     ```
 
-1. Make sure your Docker entrypoint script is executable:
-
-    ```shell
-    chmod +x web/entrypoint.sh
-    ```
-
 1. In your app's root directory, create a `heroku.yml` file that contains instructions for building your Heroku app:
 
     ```shell
@@ -36,13 +30,7 @@ git commit -m "Initial version"
         docker:
             web: web/Dockerfile
         config:
-            SHOPIFY_API_KEY: 8d796e39b66b3a14e34f84a9f09b63c0
-    ```
-
-1. Generate a new App key for Laravel:
-
-    ```shell
-    php web/artisan key:generate --show
+            SHOPIFY_API_KEY: <Your API key from the Partners Dashboard>
     ```
 
 1. Set up the necessary environment variables to run in your app using the `heroku config:set` command. All the variables below should be set using a command like
@@ -64,7 +52,7 @@ git commit -m "Initial version"
     |-|-|
     |`APP_NAME`|App name for Laravel|
     |`APP_ENV`|`production`|
-    |`APP_KEY`|The string produced by the previous step's command|
+    |`APP_KEY`|You can run `php web/artisan key:generate --show` to generate a new key|
     |`DB_CONNECTION`|`sqlite`|
     |`DB_FOREIGN_KEYS`|`true`|
     |`DB_DATABASE`|`/app/storage/db.sqlite`|
