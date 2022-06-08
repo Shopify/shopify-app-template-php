@@ -1,25 +1,28 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.1-fpm-alpine
 
 ARG SHOPIFY_API_KEY
 ENV SHOPIFY_API_KEY=$SHOPIFY_API_KEY
 
-EXPOSE 8081/tcp
+RUN apk update && apk add --update nodejs npm \
+  composer php-pdo_sqlite php-pdo_mysql php-pdo_pgsql php-simplexml php-fileinfo php-dom php-tokenizer php-xml php-xmlwriter php-session \
+  openrc bash nginx
+
+RUN docker-php-ext-install pdo
+
+COPY --chown=www-data:www-data . /app
 WORKDIR /app
 
-COPY . .
+# Overwrite default nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-RUN apt update && apt install composer node
+RUN composer install
+RUN echo "" > /app/storage/db.sqlite
+RUN chown www-data:www-data /app/storage/db.sqlite
 
-RUN cd web && composer install
-RUN touch web/storage/db.sqlite
-ENV DB_DATABASE=/app/web/storage/db.sqlite
-RUN php web/artisan key:generate
-RUN php web/artisan migrate --force
+RUN cd frontend && npm install && npm run build
+RUN composer build
 
-RUN rm -rf node_modules && npm install
-RUN cd web/frontend && rm -rf node_modules && npm install
-RUN cd web/frontend && rm -rf dist && npm run build
-CMD composer serve
+ENTRYPOINT [ "/app/entrypoint.sh" ]

@@ -197,7 +197,15 @@ Using pnpm:
 pnpm run build --api-key=REPLACE_ME
 ```
 
-You do not need to build the backend.
+The app build command will build both the frontend and backend when running as above.
+If you're manually building (for instance when deploying the `web` folder to production), you'll need to build both of them:
+
+```shell
+cd web/frontend
+SHOPIFY_API_KEY=REPLACE_ME yarn build
+cd ..
+composer build
+```
 
 ## Hosting
 

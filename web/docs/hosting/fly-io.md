@@ -12,17 +12,29 @@
 ### Build and deploy a container
 
 1. Change in to the `web` directory: `cd web`.
-1. Create an app using `flyctl launch`. You can choose your own app name or press enter to let Fly pick an app name. Choose a region for deployment (it should default to the closest one to you). Choose _No_ for DB. Choose _No_ to deploy now.
+1. Create an app using `flyctl launch`. You can choose your own app name or press enter to let Fly pick an app name. Choose a region for deployment (it should default to the closest one to you). Choose _No_ for DB to use the default SQLite database, or select a different one otherwise. Choose _No_ to deploy now.
 1. Make the following changes to the `fly.toml` file.
 
     - In the `[env]` section, add the following environment variables (in a `"` delimited string):
 
-        - `BACKEND_PORT` set to the same value as the `EXPOSE` line in the `Dockerfile`. The default value in the `Dockerfile` is `8081`.
-        - `HOST` set to the URL of the new app - this can be constructed by taking the `app` variable at the very top of the `fly.toml` file, prepending it with `https://` and adding `.fly.dev` to the end, e.g, if `app` is `"fancy-cloud-1234"`, then `HOST` should be set to `https://fancy-cloud-1234.fly.dev`
-        - `SCOPES` with the appropriate scopes for your app, the default for the unmodified template is `write_products`
-        - `SHOPIFY_API_KEY` set to the API key for your app, obtained from the partner dashboard.
+        Shopify app values:
+        |Variable|Description/value|
+        |-|-|
+        |`PORT`|The port on which to run the app|
+        |`SHOPIFY_API_KEY`|API key for your app, from the Partners Dashboard|
+        |`SCOPES`|Comma-separated scopes for your app|
+        |`HOST`|`fancy-cloud-1234.fly.dev`|
 
-    - In the `[[services]]` section, change the value of `internal_port` to match the `BACKEND_PORT` value.
+        Laravel values (note you can change the `DB_*` values if using a different database):
+        |Variable|Description/value|
+        |-|-|
+        |`APP_NAME`|App name for Laravel|
+        |`APP_ENV`|`production`|
+        |`DB_CONNECTION`|`sqlite`|
+        |`DB_FOREIGN_KEYS`|`true`|
+        |`DB_DATABASE`|`/app/storage/db.sqlite`|
+
+    - In the `[[services]]` section, change the value of `internal_port` to match the `PORT` value.
 
     - Example:
 
@@ -30,10 +42,15 @@
         :
         :
         [env]
-          BACKEND_PORT = "8081"
-          HOST = "https://fancy-cloud-1234.fly.dev"
-          SCOPES = "write_products"
-          SHOPIFY_API_KEY = "ReplaceWithKEYFromPartnerDashboard"
+          PORT = "8080"
+          SHOPIFY_API_KEY="ReplaceWithAPIKeyFromPartnerDashboard"
+          SCOPES="write_products"
+          HOST="withered-dew-1234.fly.dev"
+          APP_NAME="Test app"
+          APP_ENV="production"
+          DB_CONNECTION="sqlite"
+          DB_FOREIGN_KEYS="true"
+          DB_DATABASE="/app/storage/db.sqlite"
 
         :
         :
@@ -44,10 +61,12 @@
         :
         ```
 
-1. Set the API secret environment variable for your app:
+1. Set the API secret and APP_KEY environment variables for your app:
 
     ```shell
     flyctl secrets set SHOPIFY_API_SECRET=ReplaceWithSECRETFromPartnerDashboard
+    php artisan key:generate --show
+    flyctl secrets set APP_KEY=ReplaceWithTheValueFromThePreviousCommand
     ```
 
 1. Build and deploy the app - note that you'll need the `SHOPIFY_API_KEY` to pass to the command
