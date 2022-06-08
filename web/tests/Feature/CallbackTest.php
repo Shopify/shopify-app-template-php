@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
 use Shopify\Context;
+use Tests\BaseTestCase;
 
 class CallbackTest extends BaseTestCase
 {

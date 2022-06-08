@@ -6,9 +6,10 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Context;
+use Tests\BaseTestCase;
 use Tests\TestCase;
 
-class LoginRouteTest extends TestCase
+class LoginRouteTest extends BaseTestCase
 {
     use RefreshDatabase;
 
