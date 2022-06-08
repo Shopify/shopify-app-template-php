@@ -44,7 +44,7 @@ class EnsureBillingTest extends BaseTestCase
         );
 
         $this->assertFalse($hasPayment);
-        $this->assertEquals("totally-real-url", $confirmationUrl);
+        $this->assertEquals("https://totally-real-url", $confirmationUrl);
     }
 
     public function testRequiresSubscriptionIfNoneExistsAndRecurring()
@@ -69,7 +69,7 @@ class EnsureBillingTest extends BaseTestCase
         );
 
         $this->assertFalse($hasPayment);
-        $this->assertEquals("totally-real-url", $confirmationUrl);
+        $this->assertEquals("https://totally-real-url", $confirmationUrl);
     }
 
     public function testDoesNotRequireSinglePaymentIfExistsAndNonRecurring()
@@ -123,7 +123,7 @@ class EnsureBillingTest extends BaseTestCase
         );
 
         $this->assertFalse($hasPayment);
-        $this->assertEquals("totally-real-url", $confirmationUrl);
+        $this->assertEquals("https://totally-real-url", $confirmationUrl);
     }
 
     public function testPaginatesUntilAPaymentIsFound()
@@ -204,7 +204,10 @@ class EnsureBillingTest extends BaseTestCase
                 "oneTimePurchases" => [
                     "edges" => [
                         [
-                            "node" => ["name" => EnsureBilling::SHOPIFY_CHARGE_NAME, "test" => true, "status" => "ACTIVE"],
+                            "node" => [
+                                "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
+                                "test" => true, "status" => "ACTIVE"
+                            ],
                         ],
                     ],
                     "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
@@ -286,7 +289,7 @@ class EnsureBillingTest extends BaseTestCase
     private const PURCHASE_ONE_TIME_RESPONSE = [
         "data" => [
             "appPurchaseOneTimeCreate" => [
-                "confirmationUrl" => "totally-real-url",
+                "confirmationUrl" => "https://totally-real-url",
                 "userErrors" => [],
             ],
         ],
@@ -295,7 +298,7 @@ class EnsureBillingTest extends BaseTestCase
     private const PURCHASE_SUBSCRIPTION_RESPONSE = [
         "data" => [
             "appSubscriptionCreate" => [
-                "confirmationUrl" => "totally-real-url",
+                "confirmationUrl" => "https://totally-real-url",
                 "userErrors" => [],
             ],
         ],

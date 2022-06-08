@@ -109,7 +109,7 @@ class EnsureBilling
     /**
      * @return string|null
      */
-    private static function requestPayment(Session $session, array $config): mixed
+    private static function requestPayment(Session $session, array $config)
     {
         $hostName = Context::$HOST_NAME;
         $shop = $session->getShop();
