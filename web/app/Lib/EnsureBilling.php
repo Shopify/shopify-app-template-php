@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lib;
 
 use App\Exceptions\ShopifyBillingException;
+use Illuminate\Support\Facades\Log;
 use Shopify\Auth\Session;
 use Shopify\Clients\Graphql;
 use Shopify\Context;
@@ -59,10 +60,8 @@ class EnsureBilling
 
     private static function hasSubscription(Session $session): bool
     {
-        $client = new Graphql($session->getShop(), $session->getAccessToken());
-
-        $response = $client->query(self::RECURRING_PURCHASES_QUERY);
-        $subscriptions = $response->getDecodedBody()["body"]["data"]["currentAppInstallation"]["activeSubscriptions"];
+        $responseBody = self::queryOrException($session, self::RECURRING_PURCHASES_QUERY);
+        $subscriptions = $responseBody["data"]["currentAppInstallation"]["activeSubscriptions"];
 
         foreach ($subscriptions as $subscription) {
             if (
@@ -78,16 +77,17 @@ class EnsureBilling
 
     private static function hasOneTimePayment(Session $session): bool
     {
-        $client = new Graphql($session->getShop(), $session->getAccessToken());
-
         $purchases = null;
         $endCursor = null;
         do {
-            $response = $client->query([
-                "query" => self::ONE_TIME_PURCHASES_QUERY,
-                "variables" => ["endCursor" => $endCursor]
-            ]);
-            $purchases = $response->getDecodedBody()["body"]["data"]["currentAppInstallation"]["oneTimePurchases"];
+            $responseBody = self::queryOrException(
+                $session,
+                [
+                    "query" => self::ONE_TIME_PURCHASES_QUERY,
+                    "variables" => ["endCursor" => $endCursor]
+                ]
+            );
+            $purchases = $responseBody["data"]["currentAppInstallation"]["oneTimePurchases"];
 
             foreach ($purchases["edges"] as $purchase) {
                 $node = $purchase["node"];
@@ -133,59 +133,41 @@ class EnsureBilling
 
     private static function requestRecurringPayment(Session $session, array $config, string $returnUrl): array
     {
-        $client = new Graphql($session->getShop(), $session->getAccessToken());
-
-        $response = $client->query([
-            "query" => self::RECURRING_PURCHASE_MUTATION,
-            "variables" => [
-                "name" => self::SHOPIFY_CHARGE_NAME,
-                "lineItems" => [
-                    "plan" => [
-                        "appRecurringPricingDetails" => [
-                            "interval" => $config["interval"],
-                            "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
+        return self::queryOrException(
+            $session,
+            [
+                "query" => self::RECURRING_PURCHASE_MUTATION,
+                "variables" => [
+                    "name" => self::SHOPIFY_CHARGE_NAME,
+                    "lineItems" => [
+                        "plan" => [
+                            "appRecurringPricingDetails" => [
+                                "interval" => $config["interval"],
+                                "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
+                            ],
                         ],
                     ],
+                    "returnUrl" => $returnUrl,
+                    "test" => !self::isProd(),
                 ],
-                "returnUrl" => $returnUrl,
-                "test" => !self::isProd(),
-            ],
-        ]);
-        $responseBody = $response->getDecodedBody()["body"];
-
-        if (!empty($responseBody["errors"])) {
-            throw new ShopifyBillingException(
-                "Error while billing the store",
-                $responseBody["errors"]
-            );
-        }
-
-        return $responseBody;
+            ]
+        );
     }
 
     private static function requestOneTimePayment(Session $session, array $config, string $returnUrl): array
     {
-        $client = new Graphql($session->getShop(), $session->getAccessToken());
-
-        $response = $client->query([
-            "query" => self::ONE_TIME_PURCHASE_MUTATION,
-            "variables" => [
-                "name" => self::SHOPIFY_CHARGE_NAME,
-                "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
-                "returnUrl" => $returnUrl,
-                "test" => !self::isProd(),
-            ],
-        ]);
-        $responseBody = $response->getDecodedBody()["body"];
-
-        if (!empty($responseBody["errors"])) {
-            throw new ShopifyBillingException(
-                "Error while billing the store",
-                $responseBody["errors"]
-            );
-        }
-
-        return $responseBody;
+        return self::queryOrException(
+            $session,
+            [
+                "query" => self::ONE_TIME_PURCHASE_MUTATION,
+                "variables" => [
+                    "name" => self::SHOPIFY_CHARGE_NAME,
+                    "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
+                    "returnUrl" => $returnUrl,
+                    "test" => !self::isProd(),
+                ],
+            ]
+        );
     }
 
     private static function isProd()
@@ -196,6 +178,23 @@ class EnsureBilling
     private static function isRecurring(array $config): bool
     {
         return in_array($config["interval"], self::$RECURRING_INTERVALS);
+    }
+
+    /**
+     * @param string|array $query
+     */
+    private static function queryOrException(Session $session, $query): array
+    {
+        $client = new Graphql($session->getShop(), $session->getAccessToken());
+
+        $response = $client->query($query);
+        $responseBody = $response->getDecodedBody();
+
+        if (!empty($responseBody["errors"])) {
+            throw new ShopifyBillingException("Error while billing the store", (array)$responseBody["errors"]);
+        }
+
+        return $responseBody;
     }
 
     private const RECURRING_PURCHASES_QUERY = <<<'QUERY'

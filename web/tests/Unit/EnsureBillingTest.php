@@ -186,81 +186,51 @@ class EnsureBillingTest extends BaseTestCase
     }
 
     private const EMPTY_SUBSCRIPTIONS = [
-        "body" => [
-            "data" => [
-                "currentAppInstallation" => [
-                    "oneTimePurchases" => [
-                        "edges" => [],
-                        "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
-                    ],
-                    "activeSubscriptions" => [],
-                    "userErrors" => [],
+        "data" => [
+            "currentAppInstallation" => [
+                "oneTimePurchases" => [
+                    "edges" => [],
+                    "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
                 ],
+                "activeSubscriptions" => [],
+                "userErrors" => [],
             ],
         ],
     ];
 
     private const EXISTING_ONE_TIME_PAYMENT = [
-        "body" => [
-            "data" => [
-                "currentAppInstallation" => [
-                    "oneTimePurchases" => [
-                        "edges" => [
-                            [
-                                "node" => ["name" => EnsureBilling::SHOPIFY_CHARGE_NAME, "test" => true, "status" => "ACTIVE"],
-                            ],
+        "data" => [
+            "currentAppInstallation" => [
+                "oneTimePurchases" => [
+                    "edges" => [
+                        [
+                            "node" => ["name" => EnsureBilling::SHOPIFY_CHARGE_NAME, "test" => true, "status" => "ACTIVE"],
                         ],
-                        "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
                     ],
-                    "activeSubscriptions" => [],
+                    "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
                 ],
+                "activeSubscriptions" => [],
             ],
         ],
     ];
 
     private const EXISTING_ONE_TIME_PAYMENT_WITH_PAGINATION = [
         [
-            "body" => [
-                "data" => [
-                    "currentAppInstallation" => [
-                        "oneTimePurchases" => [
-                            "edges" => [
-                                [
-                                    "node" => ["name" => "some_other_name", "test" => true, "status" => "ACTIVE"],
-                                ],
+            "data" => [
+                "currentAppInstallation" => [
+                    "oneTimePurchases" => [
+                        "edges" => [
+                            [
+                                "node" => ["name" => "some_other_name", "test" => true, "status" => "ACTIVE"],
                             ],
-                            "pageInfo" => ["hasNextPage" => true, "endCursor" => "end_cursor"],
                         ],
-                        "activeSubscriptions" => [],
+                        "pageInfo" => ["hasNextPage" => true, "endCursor" => "end_cursor"],
                     ],
+                    "activeSubscriptions" => [],
                 ],
             ],
         ],
         [
-            "body" => [
-                "data" => [
-                    "currentAppInstallation" => [
-                        "oneTimePurchases" => [
-                            "edges" => [
-                                [
-                                    "node" => [
-                                        "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
-                                        "test" => true,
-                                        "status" => "ACTIVE",
-                                    ],
-                                ],
-                            ],
-                            "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
-                        ],
-                        "activeSubscriptions" => [],
-                    ],
-                ],
-            ],
-        ],
-    ];
-
-    private const EXISTING_INACTIVE_ONE_TIME_PAYMENT = [
-        "body" => [
             "data" => [
                 "currentAppInstallation" => [
                     "oneTimePurchases" => [
@@ -269,7 +239,7 @@ class EnsureBillingTest extends BaseTestCase
                                 "node" => [
                                     "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
                                     "test" => true,
-                                    "status" => "PENDING",
+                                    "status" => "ACTIVE",
                                 ],
                             ],
                         ],
@@ -281,38 +251,52 @@ class EnsureBillingTest extends BaseTestCase
         ],
     ];
 
-    private const EXISTING_SUBSCRIPTION = [
-        "body" => [
-            "data" => [
-                "currentAppInstallation" => [
-                    "oneTimePurchases" => [
-                        "edges" => [],
-                        "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
+    private const EXISTING_INACTIVE_ONE_TIME_PAYMENT = [
+        "data" => [
+            "currentAppInstallation" => [
+                "oneTimePurchases" => [
+                    "edges" => [
+                        [
+                            "node" => [
+                                "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
+                                "test" => true,
+                                "status" => "PENDING",
+                            ],
+                        ],
                     ],
-                    "activeSubscriptions" => [["name" => EnsureBilling::SHOPIFY_CHARGE_NAME, "test" => true]],
+                    "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
                 ],
+                "activeSubscriptions" => [],
+            ],
+        ],
+    ];
+
+    private const EXISTING_SUBSCRIPTION = [
+        "data" => [
+            "currentAppInstallation" => [
+                "oneTimePurchases" => [
+                    "edges" => [],
+                    "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
+                ],
+                "activeSubscriptions" => [["name" => EnsureBilling::SHOPIFY_CHARGE_NAME, "test" => true]],
             ],
         ],
     ];
 
     private const PURCHASE_ONE_TIME_RESPONSE = [
-        "body" => [
-            "data" => [
-                "appPurchaseOneTimeCreate" => [
-                    "confirmationUrl" => "totally-real-url",
-                    "userErrors" => [],
-                ],
+        "data" => [
+            "appPurchaseOneTimeCreate" => [
+                "confirmationUrl" => "totally-real-url",
+                "userErrors" => [],
             ],
         ],
     ];
 
     private const PURCHASE_SUBSCRIPTION_RESPONSE = [
-        "body" => [
-            "data" => [
-                "appSubscriptionCreate" => [
-                    "confirmationUrl" => "totally-real-url",
-                    "userErrors" => [],
-                ],
+        "data" => [
+            "appSubscriptionCreate" => [
+                "confirmationUrl" => "totally-real-url",
+                "userErrors" => [],
             ],
         ],
     ];
