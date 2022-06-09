@@ -1,7 +1,7 @@
 {
   "name": "shopify-app-template-php",
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "shopify": "shopify",
     "build": "shopify app build",
