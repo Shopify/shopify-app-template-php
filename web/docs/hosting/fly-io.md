@@ -20,9 +20,9 @@
         Shopify app values:
         |Variable|Description/value|
         |-|-|
+        |`SHOPIFY_API_KEY`|Obtainable by running `yarn print-env`|
+        |`SCOPES`|Obtainable by running `yarn print-env`|
         |`PORT`|The port on which to run the app|
-        |`SHOPIFY_API_KEY`|API key for your app, from the Partners Dashboard|
-        |`SCOPES`|Comma-separated scopes for your app|
         |`HOST`|`fancy-cloud-1234.fly.dev`|
 
         Laravel values (note you can change the `DB_*` values if using a different database):
@@ -43,7 +43,7 @@
         :
         [env]
           PORT = "8080"
-          SHOPIFY_API_KEY="ReplaceWithAPIKeyFromPartnerDashboard"
+          SHOPIFY_API_KEY="ReplaceWithKEYFromEnvCommand"
           SCOPES="write_products"
           HOST="withered-dew-1234.fly.dev"
           APP_NAME="Test app"
@@ -56,7 +56,7 @@
         :
 
         [[services]]
-          internal_port = 8081
+          internal_port = "8080"
         :
         :
         ```
@@ -64,15 +64,16 @@
 1. Set the API secret and APP_KEY environment variables for your app:
 
     ```shell
-    flyctl secrets set SHOPIFY_API_SECRET=ReplaceWithSECRETFromPartnerDashboard
-    php artisan key:generate --show
+    cd .. && yarn print-env
+    flyctl secrets set SHOPIFY_API_SECRET=ReplaceWithSECRETFromEnvCommand
+    cd web && php artisan key:generate --show
     flyctl secrets set APP_KEY=ReplaceWithTheValueFromThePreviousCommand
     ```
 
 1. Build and deploy the app - note that you'll need the `SHOPIFY_API_KEY` to pass to the command
 
     ```shell
-    flyctl deploy --build-arg SHOPIFY_API_KEY=ReplaceWithKEYFromPartnerDashboard
+    flyctl deploy --build-arg SHOPIFY_API_KEY=ReplaceWithKEYFromEnvCommand
     ```
 
 ### Update URLs in Partner Dashboard

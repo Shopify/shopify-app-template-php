@@ -30,7 +30,7 @@ git commit -m "Initial version"
         docker:
             web: web/Dockerfile
         config:
-            SHOPIFY_API_KEY: <Your API key from the Partners Dashboard>
+            SHOPIFY_API_KEY: <Your API key from `yarn print-env`>
     ```
 
 1. Set up the necessary environment variables to run in your app using the `heroku config:set` command. All the variables below should be set using a command like
@@ -42,9 +42,9 @@ git commit -m "Initial version"
     Shopify app values:
     |Variable|Description/value|
     |-|-|
-    |`SHOPIFY_API_KEY`|API key for your app, from the Partners Dashboard|
-    |`SHOPIFY_API_SECRET`|API secret key for your app, from the Partners Dashboard|
-    |`SCOPES`|Comma-separated scopes for your app|
+    |`SHOPIFY_API_KEY`|Obtainable by running `yarn print-env`|
+    |`SHOPIFY_API_SECRET`|Obtainable by running `yarn print-env`|
+    |`SCOPES`|Obtainable by running `yarn print-env`|
     |`HOST`|`my-app-name.herokuapp.com`|
 
     Laravel values (note you can change the `DB_*` values if using a different database):
@@ -52,7 +52,7 @@ git commit -m "Initial version"
     |-|-|
     |`APP_NAME`|App name for Laravel|
     |`APP_ENV`|`production`|
-    |`APP_KEY`|You can run `php web/artisan key:generate --show` to generate a new key|
+    |`APP_KEY`|Obtainable by running `php web/artisan key:generate --show`|
     |`DB_CONNECTION`|`sqlite`|
     |`DB_FOREIGN_KEYS`|`true`|
     |`DB_DATABASE`|`/app/storage/db.sqlite`|
