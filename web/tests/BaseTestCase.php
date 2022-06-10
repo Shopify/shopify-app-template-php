@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Client\ClientInterface;

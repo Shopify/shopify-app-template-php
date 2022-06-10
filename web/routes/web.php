@@ -1,8 +1,10 @@
 <?php
 
+use App\Lib\EnsureBilling;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Shopify\Auth\OAuth;
@@ -27,7 +29,6 @@ use Shopify\Webhooks\Topics;
 
 Route::fallback(function (Request $request) {
     $shop = $request->query('shop') ? Utils::sanitizeShopDomain($request->query('shop')) : null;
-    $host = $request->query('host');
     $appInstalled = Session::where('shop', $shop)->exists();
     if ($appInstalled) {
         if (env('APP_ENV') === 'production') {
@@ -90,7 +91,16 @@ Route::get('/api/auth/callback', function (Request $request) {
         );
     }
 
-    return redirect("?" . http_build_query(['host' => $host, 'shop' => $shop]));
+    $redirectUrl = "?" . http_build_query(['host' => $host, 'shop' => $shop]);
+    if (Config::get('shopify.billing.required')) {
+        list($hasPayment, $confirmationUrl) = EnsureBilling::check($session, Config::get('shopify.billing'));
+
+        if (!$hasPayment) {
+            $redirectUrl = $confirmationUrl;
+        }
+    }
+
+    return redirect($redirectUrl);
 });
 
 Route::post('/api/graphql', function (Request $request) {

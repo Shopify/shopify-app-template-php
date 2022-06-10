@@ -8,9 +8,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Auth\AccessTokenOnlineUserInfo;
 use Shopify\Auth\Session;
 use Shopify\Context;
+use Tests\BaseTestCase;
 use Tests\TestCase;
 
-class DBSessionStorageTest extends TestCase
+class DBSessionStorageTest extends BaseTestCase
 {
     use RefreshDatabase;
 

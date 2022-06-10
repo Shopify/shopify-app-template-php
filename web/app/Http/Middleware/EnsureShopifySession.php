@@ -2,9 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\ShopifyBillingException;
+use App\Lib\EnsureBilling;
+use App\Lib\TopLevelRedirection;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Shopify\Clients\Graphql;
 use Shopify\Context;
 use Shopify\Utils;
@@ -13,9 +17,6 @@ class EnsureShopifySession
 {
     public const ACCESS_MODE_ONLINE = 'online';
     public const ACCESS_MODE_OFFLINE = 'offline';
-
-    public const REDIRECT_HEADER = 'X-Shopify-API-Request-Failure-Reauthorize';
-    public const REDIRECT_URL_HEADER = 'X-Shopify-API-Request-Failure-Reauthorize-Url';
 
     public const TEST_GRAPHQL_QUERY = <<<QUERY
     {
@@ -57,36 +58,45 @@ class EnsureShopifySession
         }
 
         if ($session && $session->isValid()) {
-            // If the session is valid, check if it's actually active by making a very simple request, and proceed
-            $client = new Graphql($session->getShop(), $session->getAccessToken());
-            $response = $client->query(self::TEST_GRAPHQL_QUERY);
+            if (Config::get('shopify.billing.required')) {
+                // The request to check billing status serves to validate that the access token is still valid.
+                try {
+                    list($hasPayment, $confirmationUrl) =
+                        EnsureBilling::check($session, Config::get('shopify.billing'));
+                    $proceed = true;
 
-            if ($response->getStatusCode() === 200) {
+                    if (!$hasPayment) {
+                        return TopLevelRedirection::redirect($request, $confirmationUrl);
+                    }
+                } catch (ShopifyBillingException $e) {
+                    $proceed = false;
+                }
+            } else {
+                // Make a request to ensure the access token is still valid. Otherwise, re-authenticate the user.
+                $client = new Graphql($session->getShop(), $session->getAccessToken());
+                $response = $client->query(self::TEST_GRAPHQL_QUERY);
+
+                $proceed = $response->getStatusCode() === 200;
+            }
+
+            if ($proceed) {
                 $request->attributes->set('shopifySession', $session);
                 return $next($request);
             }
         }
 
-        if ($request->ajax()) {
-            // If there is no shop in the URL, we may be able to grab the shop in the session or authentication header
-            if (!$shop) {
-                if ($session) {
-                    $shop = $session->getShop();
-                } elseif (Context::$IS_EMBEDDED_APP) {
-                    $authHeader = $request->header('Authorization', '');
-                    if (preg_match('/Bearer (.*)/', $authHeader, $matches) !== false) {
-                        $payload = Utils::decodeSessionToken($matches[1]);
-                        $shop = parse_url($payload['dest'], PHP_URL_HOST);
-                    }
+        $bearerPresent = preg_match("/Bearer (.*)/", $request->header('Authorization', ''), $bearerMatches);
+        if (!$shop) {
+            if ($session) {
+                $shop = $session->getShop();
+            } elseif (Context::$IS_EMBEDDED_APP) {
+                if ($bearerPresent !== false) {
+                    $payload = Utils::decodeSessionToken($bearerMatches[1]);
+                    $shop = parse_url($payload['dest'], PHP_URL_HOST);
                 }
             }
-
-            return response('', 401, [
-                self::REDIRECT_HEADER => '1',
-                self::REDIRECT_URL_HEADER => "/api/auth?shop=$shop",
-            ]);
-        } else {
-            return redirect("/api/auth?shop=$shop");
         }
+
+        return TopLevelRedirection::redirect($request, "/api/auth?shop=$shop");
     }
 }

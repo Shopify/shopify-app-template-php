@@ -9,6 +9,7 @@ use Shopify\Context;
 use Shopify\Webhooks\Handler;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
+use Tests\BaseTestCase;
 
 class WebhookTest extends BaseTestCase
 {
