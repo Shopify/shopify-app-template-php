@@ -56,7 +56,7 @@
         :
 
         [[services]]
-          internal_port = "8080"
+          internal_port = 8080
         :
         :
         ```
@@ -64,9 +64,9 @@
 1. Set the API secret and APP_KEY environment variables for your app:
 
     ```shell
-    cd .. && yarn print-env
+    (cd .. && yarn print-env)
     flyctl secrets set SHOPIFY_API_SECRET=ReplaceWithSECRETFromEnvCommand
-    cd web && php artisan key:generate --show
+    php artisan key:generate --show
     flyctl secrets set APP_KEY=ReplaceWithTheValueFromThePreviousCommand
     ```
 
