@@ -6,7 +6,7 @@ import {ApolloClient, HttpLink, InMemoryCache} from '@apollo/client';
 import {ApolloProvider} from '@apollo/client/react';
 import {AppProvider} from "@shopify/polaris";
 import translations from "@shopify/polaris/locales/en.json";
-import '@shopify/polaris/dist/styles.css';
+import '@shopify/polaris/build/esm/styles.css';
 import PageLayout from "./components/PageLayout";
 import ProductsPage from "./components/ProductsPage";
 import {Provider, useAppBridge} from '@shopify/app-bridge-react';
