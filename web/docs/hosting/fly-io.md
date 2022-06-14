@@ -20,8 +20,8 @@
         Shopify app values:
         |Variable|Description/value|
         |-|-|
-        |`SHOPIFY_API_KEY`|Obtainable by running `yarn print-env`|
-        |`SCOPES`|Obtainable by running `yarn print-env`|
+        |`SHOPIFY_API_KEY`|Obtainable by running `yarn run info --web-env`|
+        |`SCOPES`|Obtainable by running `yarn run info --web-env`|
         |`PORT`|The port on which to run the app|
         |`HOST`|`fancy-cloud-1234.fly.dev`|
 
@@ -64,7 +64,7 @@
 1. Set the API secret and APP_KEY environment variables for your app:
 
     ```shell
-    (cd .. && yarn print-env)
+    (cd .. && yarn run info --web-env)
     flyctl secrets set SHOPIFY_API_SECRET=ReplaceWithSECRETFromEnvCommand
     php artisan key:generate --show
     flyctl secrets set APP_KEY=ReplaceWithTheValueFromThePreviousCommand
