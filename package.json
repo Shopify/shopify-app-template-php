@@ -9,7 +9,7 @@
     "push": "shopify app push",
     "scaffold": "shopify app scaffold",
     "deploy": "shopify app deploy",
-    "print-env": "shopify app env"
+    "info": "shopify app info"
   },
   "dependencies": {
     "@shopify/app": "^3.0.0",
