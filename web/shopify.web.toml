@@ -2,4 +2,4 @@ type="backend"
 
 [commands]
 dev = "composer serve"
-build = "composer build-frontend-links"
+build = "composer build"
