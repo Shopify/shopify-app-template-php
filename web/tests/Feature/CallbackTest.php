@@ -133,6 +133,7 @@ class CallbackTest extends BaseTestCase
     public function testRedirectsToBillingWhenNoPaymentIsPresent()
     {
         Config::set("shopify.billing", [
+            "chargeName" => "My Shopify App One-Time Billing",
             "required" => true,
             "amount" => 1,
             "currencyCode" => "USD",
