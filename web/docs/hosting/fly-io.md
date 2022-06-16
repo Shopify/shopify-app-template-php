@@ -86,7 +86,7 @@
 
     ```shell
     flyctl secrets set SHOPIFY_API_SECRET=ReplaceWithSECRETFromEnvCommand
-    php artisan key:generate --show
+    php web/artisan key:generate --show
     flyctl secrets set APP_KEY=ReplaceWithTheValueFromThePreviousCommand
     ```
 
