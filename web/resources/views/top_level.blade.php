@@ -3,12 +3,13 @@
 
 <head>
     <title>Shopify PHP App</title>
-    <script src="https://unpkg.com/@shopify/app-bridge@2"></script>
+    <script src="https://unpkg.com/@shopify/app-bridge@3.1.0"></script>
+    <script src="https://unpkg.com/@shopify/app-bridge-utils@3.1.0"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            if (window.top === window.self) {
-                window.location.href = '/api/auth?shop={{$shop}}';
-            } else {
+            var appBridgeUtils = window['app-bridge-utils'];
+
+            if (appBridgeUtils.isShopifyEmbedded()) {
                 var AppBridge = window['app-bridge'];
                 var createApp = AppBridge.default;
                 var Redirect = AppBridge.actions.Redirect;
@@ -21,6 +22,8 @@
                 const redirect = Redirect.create(app);
 
                 redirect.dispatch(Redirect.Action.REMOTE, 'https://{{$hostName}}/api/auth/toplevel?shop={{$shop}}');
+            } else {
+                window.location.href = '/api/auth?shop={{$shop}}';
             }
         });
     </script>
