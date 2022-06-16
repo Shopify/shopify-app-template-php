@@ -35,12 +35,26 @@ class AppServiceProvider extends ServiceProvider
     {
         $host = str_replace('https://', '', env('HOST', 'not_defined'));
 
+        $packageJson = dirname(__DIR__) . '/../../package.json';
+        if (file_exists($packageJson)) {
+            $content = file_get_contents($packageJson);
+            $content = json_decode($content, true);
+            $templateVersion = $content['version'] ?? 'unknown';
+        } else {
+            $templateVersion = 'unknown';
+        }
+
         Context::initialize(
             env('SHOPIFY_API_KEY', 'not_defined'),
             env('SHOPIFY_API_SECRET', 'not_defined'),
             env('SCOPES', 'not_defined'),
             $host,
-            new DbSessionStorage()
+            new DbSessionStorage(),
+            'unstable',     // default value, needed to add userAgentPrefix param
+            true,           // default value, needed to add userAgentPrefix param
+            false,          // default value, needed to add userAgentPrefix param
+            null,           // default value, needed to add userAgentPrefix param
+            'PHP app template/' . $templateVersion
         );
 
         URL::forceRootUrl("https://$host");
