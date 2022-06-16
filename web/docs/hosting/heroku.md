@@ -17,21 +17,33 @@ git commit -m "Initial version"
 
 ## Build and deploy from Git repo
 
-1. Create an app in Heroku using `heroku create -a my-app-name`. This will create a git remote named `heroku` for deploying the app to Heroku. It will also return the URL to where the app will run when deployed, in the form of:
+1. Create an app in Heroku using `heroku create -a my-app-name -s container`. This will create a git remote named `heroku` for deploying the app to Heroku. It will also return the URL to where the app will run when deployed, in the form of:
 
     ```text
     https://my-app-name.herokuapp.com
     ```
 
-1. In your app's root directory, create a `heroku.yml` file that contains instructions for building your Heroku app:
+1. To create a new app in the Partner Dashboard or to link the app to an existing app, run the following command using your preferred package manager:
+
+    Using yarn:
 
     ```shell
-    build:
-        docker:
-            web: web/Dockerfile
-        config:
-            SHOPIFY_API_KEY: <Your API key from `yarn run info --web-env`>
+    yarn run info --web-env
     ```
+
+    Using npm:
+
+    ```shell
+    npm run info --web-env
+    ```
+
+    Using pnpm:
+
+    ```shell
+    pnpm run info --web-env
+    ```
+
+    Take note of the `SCOPES`, `SHOPIFY_API_KEY` and the `SHOPIFY_API_SECRET` values, as you'll need them in the next steps.
 
 1. Set up the necessary environment variables to run in your app using the `heroku config:set` command. All the variables below should be set using a command like
 
@@ -42,9 +54,9 @@ git commit -m "Initial version"
     Shopify app values:
     |Variable|Description/value|
     |-|-|
-    |`SHOPIFY_API_KEY`|Obtainable by running `yarn run info --web-env`|
-    |`SHOPIFY_API_SECRET`|Obtainable by running `yarn run info --web-env`|
-    |`SCOPES`|Obtainable by running `yarn run info --web-env`|
+    |`SHOPIFY_API_KEY`|can be obtained from the `run info --web-env` command in the previous step|
+    |`SHOPIFY_API_SECRET`|can be obtained from the `run info --web-env` command in the previous step|
+    |`SCOPES`|can be obtained from the `run info --web-env` command in the previous step|
     |`HOST`|`my-app-name.herokuapp.com`|
 
     Laravel values (note you can change the `DB_*` values if using a different database):
@@ -57,17 +69,21 @@ git commit -m "Initial version"
     |`DB_FOREIGN_KEYS`|`true`|
     |`DB_DATABASE`|`/app/storage/db.sqlite`|
 
+1. In your app's root directory, create a `heroku.yml` file that contains instructions for building your Heroku app:
+
+    ```yaml
+    build:
+      docker:
+        web: Dockerfile
+      config:
+        SHOPIFY_API_KEY: ReplaceWithKEYFromEnvCommand
+    ```
+
 1. Add the Heroku config file to your git repo:
 
     ```shell
     git add heroku.yml
-    git commit -m "Adding Heroku config file"
-    ```
-
-1. Set the stack of your app to `container`:
-
-    ```shell
-    heroku stack:set container
+    git commit -m "Add Heroku config file"
     ```
 
 1. Push the app to Heroku. This will automatically deploy the app.
