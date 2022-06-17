@@ -1,5 +1,6 @@
 version: 2
 updates:
+  # Enable version updates for composer - main (old template)
   - package-ecosystem: composer
     directory: "/"
     schedule:
@@ -11,3 +12,54 @@ updates:
     labels:
       - "Composer upgrades"
     open-pull-requests-limit: 100
+
+  # Enable version updates for composer - cli_two (old template)
+  - package-ecosystem: composer
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "00:00"
+      timezone: "UTC"
+    # Raise PRs for composer updates against the `cli_two` branch
+    target-branch: "cli_two"
+    reviewers:
+      - Shopify/client-libraries-atc
+    labels:
+      - "cli_two"
+      - "Composer upgrades"
+    open-pull-requests-limit: 100
+
+  # Enable version updates for composer - cli_three/web (new template)
+  - package-ecosystem: composer
+    directory: "/web"
+    schedule:
+      interval: "daily"
+      time: "00:00"
+      timezone: "UTC"
+    # Raise PRs for composer updates against the `cli_three` branch
+    target-branch: "cli_three"
+    reviewers:
+      - Shopify/client-libraries-atc
+    labels:
+      - "cli_three"
+      - "Composer upgrades"
+    open-pull-requests-limit: 100
+
+  # Enable version updates for npm - cli_three/ (new template)
+  - package-ecosystem: "npm"
+    # Look for `package.json` and `lock` files in the `root` directory
+    # This will be CLI dependencies only
+    directory: "/"
+    # Check the npm registry for updates every day (weekdays)
+    schedule:
+      interval: "daily"
+      time: "00:00"
+      timezone: "UTC"
+    # Raise PRs for version updates to npm against the `cli_three` branch
+    target-branch: "cli_three"
+    reviewers:
+      - Shopify/client-libraries-atc
+    # Labels on pull requests for version updates only
+    labels:
+      - "cli_three"
+      - "dependencies"
