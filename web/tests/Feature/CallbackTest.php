@@ -187,7 +187,7 @@ class CallbackTest extends BaseTestCase
     private function mockCallbackRequests($addBillingCalls = false)
     {
         $oauthTokenUrl = "https://test-shop.myshopify.io/admin/oauth/access_token";
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/2022-04/graphql.json";
 
         $expectedCalls = [
             [$this->callback(function ($request) use ($oauthTokenUrl) {
