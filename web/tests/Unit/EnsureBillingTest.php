@@ -15,6 +15,7 @@ class EnsureBillingTest extends BaseTestCase
     use RefreshDatabase;
 
     private Session $session;
+    private const SHOPIFY_CHARGE_NAME = 'My Shopify App Billing';
 
     public function setUp(): void
     {
@@ -32,7 +33,7 @@ class EnsureBillingTest extends BaseTestCase
                 "oneTimePurchases",
                 [
                     "query" => "appPurchaseOneTimeCreate",
-                    "variables" => ["name" => EnsureBilling::SHOPIFY_CHARGE_NAME],
+                    "variables" => ["name" => self::SHOPIFY_CHARGE_NAME],
                 ],
             ],
             [self::EMPTY_SUBSCRIPTIONS, self::PURCHASE_ONE_TIME_RESPONSE]
@@ -40,7 +41,12 @@ class EnsureBillingTest extends BaseTestCase
 
         list($hasPayment, $confirmationUrl) = EnsureBilling::check(
             $this->session,
-            ["amount" => 5, "interval" => EnsureBilling::INTERVAL_ONE_TIME, "currencyCode" => "USD"]
+            [
+                "chargeName" => self::SHOPIFY_CHARGE_NAME,
+                "amount" => 5,
+                "interval" => EnsureBilling::INTERVAL_ONE_TIME,
+                "currencyCode" => "USD",
+            ]
         );
 
         $this->assertFalse($hasPayment);
@@ -55,7 +61,7 @@ class EnsureBillingTest extends BaseTestCase
                 [
                     "query" => "appSubscriptionCreate",
                     "variables" => [
-                        "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
+                        "name" => self::SHOPIFY_CHARGE_NAME,
                         "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS,
                     ],
                 ],
@@ -65,7 +71,12 @@ class EnsureBillingTest extends BaseTestCase
 
         list($hasPayment, $confirmationUrl) = EnsureBilling::check(
             $this->session,
-            ["amount" => 5, "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS, "currencyCode" => "USD"]
+            [
+                "chargeName" => self::SHOPIFY_CHARGE_NAME,
+                "amount" => 5,
+                "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS,
+                "currencyCode" => "USD",
+            ]
         );
 
         $this->assertFalse($hasPayment);
@@ -81,7 +92,12 @@ class EnsureBillingTest extends BaseTestCase
 
         list($hasPayment, $confirmationUrl) = EnsureBilling::check(
             $this->session,
-            ["amount" => 5, "interval" => EnsureBilling::INTERVAL_ONE_TIME, "currencyCode" => "USD"]
+            [
+                "chargeName" => self::SHOPIFY_CHARGE_NAME,
+                "amount" => 5,
+                "interval" => EnsureBilling::INTERVAL_ONE_TIME,
+                "currencyCode" => "USD",
+            ]
         );
 
         $this->assertTrue($hasPayment);
@@ -97,7 +113,12 @@ class EnsureBillingTest extends BaseTestCase
 
         list($hasPayment, $confirmationUrl) = EnsureBilling::check(
             $this->session,
-            ["amount" => 5, "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS, "currencyCode" => "USD"]
+            [
+                "chargeName" => self::SHOPIFY_CHARGE_NAME,
+                "amount" => 5,
+                "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS,
+                "currencyCode" => "USD",
+            ]
         );
 
         $this->assertTrue($hasPayment);
@@ -111,7 +132,7 @@ class EnsureBillingTest extends BaseTestCase
                 "oneTimePurchases",
                 [
                     "query" => "appPurchaseOneTimeCreate",
-                    "variables" => ["name" => EnsureBilling::SHOPIFY_CHARGE_NAME],
+                    "variables" => ["name" => self::SHOPIFY_CHARGE_NAME],
                 ],
             ],
             [self::EXISTING_INACTIVE_ONE_TIME_PAYMENT, self::PURCHASE_ONE_TIME_RESPONSE]
@@ -119,7 +140,12 @@ class EnsureBillingTest extends BaseTestCase
 
         list($hasPayment, $confirmationUrl) = EnsureBilling::check(
             $this->session,
-            ["amount" => 5, "interval" => EnsureBilling::INTERVAL_ONE_TIME, "currencyCode" => "USD"]
+            [
+                "chargeName" => self::SHOPIFY_CHARGE_NAME,
+                "amount" => 5,
+                "interval" => EnsureBilling::INTERVAL_ONE_TIME,
+                "currencyCode" => "USD",
+            ]
         );
 
         $this->assertFalse($hasPayment);
@@ -138,7 +164,12 @@ class EnsureBillingTest extends BaseTestCase
 
         list($hasPayment, $confirmationUrl) = EnsureBilling::check(
             $this->session,
-            ["amount" => 5, "interval" => EnsureBilling::INTERVAL_ONE_TIME, "currencyCode" => "USD"]
+            [
+                "chargeName" => self::SHOPIFY_CHARGE_NAME,
+                "amount" => 5,
+                "interval" => EnsureBilling::INTERVAL_ONE_TIME,
+                "currencyCode" => "USD",
+            ]
         );
 
         $this->assertTrue($hasPayment);
@@ -205,7 +236,7 @@ class EnsureBillingTest extends BaseTestCase
                     "edges" => [
                         [
                             "node" => [
-                                "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
+                                "name" => self::SHOPIFY_CHARGE_NAME,
                                 "test" => true, "status" => "ACTIVE"
                             ],
                         ],
@@ -240,7 +271,7 @@ class EnsureBillingTest extends BaseTestCase
                         "edges" => [
                             [
                                 "node" => [
-                                    "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
+                                    "name" => self::SHOPIFY_CHARGE_NAME,
                                     "test" => true,
                                     "status" => "ACTIVE",
                                 ],
@@ -261,7 +292,7 @@ class EnsureBillingTest extends BaseTestCase
                     "edges" => [
                         [
                             "node" => [
-                                "name" => EnsureBilling::SHOPIFY_CHARGE_NAME,
+                                "name" => self::SHOPIFY_CHARGE_NAME,
                                 "test" => true,
                                 "status" => "PENDING",
                             ],
@@ -281,7 +312,7 @@ class EnsureBillingTest extends BaseTestCase
                     "edges" => [],
                     "pageInfo" => ["hasNextPage" => false, "endCursor" => null],
                 ],
-                "activeSubscriptions" => [["name" => EnsureBilling::SHOPIFY_CHARGE_NAME, "test" => true]],
+                "activeSubscriptions" => [["name" => self::SHOPIFY_CHARGE_NAME, "test" => true]],
             ],
         ],
     ];

@@ -12,8 +12,6 @@ use Shopify\Context;
 
 class EnsureBilling
 {
-    public const SHOPIFY_CHARGE_NAME = "Shopify app billing";
-
     public const INTERVAL_ONE_TIME = "ONE_TIME";
     public const INTERVAL_EVERY_30_DAYS = "EVERY_30_DAYS";
     public const INTERVAL_ANNUAL = "ANNUAL";
@@ -27,6 +25,7 @@ class EnsureBilling
      *
      * @param Session $session The current session to check
      * @param array   $config  Associative array that accepts keys:
+     *                         - "chargeName": string, the name of the charge
      *                         - "amount": float
      *                         - "currencyCode": string
      *                         - "interval": one of the INTERVAL_* consts
@@ -52,20 +51,20 @@ class EnsureBilling
     private static function hasActivePayment(Session $session, array $config): bool
     {
         if (self::isRecurring($config)) {
-            return self::hasSubscription($session);
+            return self::hasSubscription($session, $config);
         } else {
-            return self::hasOneTimePayment($session);
+            return self::hasOneTimePayment($session, $config);
         }
     }
 
-    private static function hasSubscription(Session $session): bool
+    private static function hasSubscription(Session $session, array $config): bool
     {
         $responseBody = self::queryOrException($session, self::RECURRING_PURCHASES_QUERY);
         $subscriptions = $responseBody["data"]["currentAppInstallation"]["activeSubscriptions"];
 
         foreach ($subscriptions as $subscription) {
             if (
-                $subscription["name"] === self::SHOPIFY_CHARGE_NAME &&
+                $subscription["name"] === $config["chargeName"] &&
                 (!self::isProd() || !$subscription["test"])
             ) {
                 return true;
@@ -75,7 +74,7 @@ class EnsureBilling
         return false;
     }
 
-    private static function hasOneTimePayment(Session $session): bool
+    private static function hasOneTimePayment(Session $session, array $config): bool
     {
         $purchases = null;
         $endCursor = null;
@@ -92,7 +91,7 @@ class EnsureBilling
             foreach ($purchases["edges"] as $purchase) {
                 $node = $purchase["node"];
                 if (
-                    $node["name"] === self::SHOPIFY_CHARGE_NAME &&
+                    $node["name"] === $config["chargeName"] &&
                     (!self::isProd() || !$node["test"]) &&
                     $node["status"] === "ACTIVE"
                 ) {
@@ -138,7 +137,7 @@ class EnsureBilling
             [
                 "query" => self::RECURRING_PURCHASE_MUTATION,
                 "variables" => [
-                    "name" => self::SHOPIFY_CHARGE_NAME,
+                    "name" => $config["chargeName"],
                     "lineItems" => [
                         "plan" => [
                             "appRecurringPricingDetails" => [
@@ -161,7 +160,7 @@ class EnsureBilling
             [
                 "query" => self::ONE_TIME_PURCHASE_MUTATION,
                 "variables" => [
-                    "name" => self::SHOPIFY_CHARGE_NAME,
+                    "name" => $config["chargeName"],
                     "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
                     "returnUrl" => $returnUrl,
                     "test" => !self::isProd(),
