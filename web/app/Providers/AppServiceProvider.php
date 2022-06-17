@@ -50,11 +50,12 @@ class AppServiceProvider extends ServiceProvider
             env('SCOPES', 'not_defined'),
             $host,
             new DbSessionStorage(),
-            'unstable',     // default value, needed to add userAgentPrefix param
-            true,           // default value, needed to add userAgentPrefix param
-            false,          // default value, needed to add userAgentPrefix param
-            null,           // default value, needed to add userAgentPrefix param
-            'PHP app template/' . $templateVersion
+            // the following four params are needed in order to set userAgentPrefix
+            '2022-04',                  // apiVersion
+            true,                       // isEmbeddedApp, default = true
+            false,                      // isPrivateApp, default = false
+            null,                       // privateAppStorefrontAccessToken, default = null
+            'PHP app template/' . $templateVersion  // userAgentPrefix
         );
 
         URL::forceRootUrl("https://$host");

@@ -48,7 +48,7 @@ class ProxyGraphqlTest extends BaseTestCase
         $this->assertTrue(Context::$SESSION_STORAGE->storeSession($session));
         $this->assertEquals($session, Context::$SESSION_STORAGE->loadSession($sessionId));
 
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/2022-04/graphql.json";
 
         $client = $this->mockClient();
         $client->expects($this->exactly(2))
