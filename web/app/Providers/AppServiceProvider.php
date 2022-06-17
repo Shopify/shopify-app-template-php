@@ -35,11 +35,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $host = str_replace('https://', '', env('HOST', 'not_defined'));
 
-        $packageJson = dirname(__DIR__) . '/../../package.json';
-        if (file_exists($packageJson)) {
-            $content = file_get_contents($packageJson);
-            $content = json_decode($content, true);
-            $templateVersion = $content['version'] ?? 'unknown';
+        $versionFilePath = dirname(__DIR__) . '/../version.txt';
+        if (file_exists($versionFilePath)) {
+            $templateVersion = trim(file_get_contents($versionFilePath));
         } else {
             $templateVersion = 'unknown';
         }
