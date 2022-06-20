@@ -231,6 +231,22 @@ The following pages document the basic steps to host and deploy your application
 - [fly.io](/web/docs/hosting/fly-io.md)
 - [Heroku](/web/docs/hosting/heroku.md)
 
+## Known issues
+
+### Hot module replacement and Firefox
+
+When running the app with the CLI in development mode on Firefox, you might see your app constantly reloading when you access it.
+That happens because of the way HMR websocket requests work, and the way the CLI is set up to tunnel requests through ngrok.
+
+Until we find a permanent solution that enables HMR on Firefox, this template accepts the `SHOPIFY_VITE_HMR_USE_POLLING` env var to replace HMR with polling.
+While not as responsive as HMR, the frontend will still refresh itself every few seconds with your changes.
+
+You can export this variable from your shell profile, or set it when running e.g. `yarn dev`:
+
+```shell
+SHOPIFY_VITE_HMR_USE_POLLING=1 yarn dev
+```
+
 ## Developer resources
 
 - [Introduction to Shopify apps](https://shopify.dev/apps/getting-started)
