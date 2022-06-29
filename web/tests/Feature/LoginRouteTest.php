@@ -7,7 +7,6 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Context;
 use Tests\BaseTestCase;
-use Tests\TestCase;
 
 class LoginRouteTest extends BaseTestCase
 {
@@ -19,7 +18,7 @@ class LoginRouteTest extends BaseTestCase
             'client_id' => Context::$API_KEY,
             'scope' => Context::$SCOPES->toString(),
             'redirect_uri' => 'https://' . Context::$HOST_NAME . '/api/auth/callback',
-            'grant_options' => ['per-user']
+            'grant_options' => ['']
         ];
 
         $response = $this->withCookie('shopify_top_level_oauth', '1')->get("/api/auth?shop=myshop");
