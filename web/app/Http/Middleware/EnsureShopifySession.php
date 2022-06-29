@@ -34,7 +34,7 @@ class EnsureShopifySession
      * @param  string  $accessMode
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $accessMode = self::ACCESS_MODE_ONLINE)
+    public function handle(Request $request, Closure $next, string $accessMode = self::ACCESS_MODE_OFFLINE)
     {
         switch ($accessMode) {
             case self::ACCESS_MODE_ONLINE:

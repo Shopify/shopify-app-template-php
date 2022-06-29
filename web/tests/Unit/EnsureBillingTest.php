@@ -62,7 +62,13 @@ class EnsureBillingTest extends BaseTestCase
                     "query" => "appSubscriptionCreate",
                     "variables" => [
                         "name" => self::SHOPIFY_CHARGE_NAME,
-                        "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS,
+                        "lineItems" => [
+                            "plan" => [
+                                "appRecurringPricingDetails" => [
+                                    "interval" => EnsureBilling::INTERVAL_EVERY_30_DAYS,
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -206,14 +212,6 @@ class EnsureBillingTest extends BaseTestCase
             ->method('sendRequest')
             ->withConsecutive(...$requestCallbacks)
             ->willReturnOnConsecutiveCalls(...$responseObjects);
-    }
-
-    private function assertArraySubset(array $expected, array $actual)
-    {
-        foreach ($expected as $key => $value) {
-            $this->assertArrayHasKey($key, $expected);
-            $this->assertEquals($expected[$key], $value);
-        }
     }
 
     private const EMPTY_SUBSCRIPTIONS = [
