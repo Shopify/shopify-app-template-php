@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
 use Shopify\Context;
+use Shopify\ApiVersion;
 
 class ProxyGraphqlTest extends BaseTestCase
 {
@@ -47,7 +48,7 @@ class ProxyGraphqlTest extends BaseTestCase
         $this->assertTrue(Context::$SESSION_STORAGE->storeSession($session));
         $this->assertEquals($session, Context::$SESSION_STORAGE->loadSession($sessionId));
 
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/" . ApiVersion::LATEST . "/graphql.json";
 
         $client = $this->mockClient();
         $client->expects($this->exactly(2))

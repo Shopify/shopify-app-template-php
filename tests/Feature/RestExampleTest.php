@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
 use Shopify\Context;
+use Shopify\ApiVersion;
 
 class RestExampleTest extends BaseTestCase
 {
@@ -35,8 +36,8 @@ class RestExampleTest extends BaseTestCase
 
         $this->assertTrue(Context::$SESSION_STORAGE->storeSession($session));
 
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
-        $restUrl = "https://test-shop.myshopify.io/admin/api/unstable/products.json?limit=5";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/" . ApiVersion::LATEST . "/graphql.json";
+        $restUrl = "https://test-shop.myshopify.io/admin/api/" . ApiVersion::LATEST . "/products.json?limit=5";
         $restResponse = [
             'data' => [
                 'products' => [

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Shopify\Context;
+use Shopify\ApiVersion;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
 
@@ -36,7 +37,8 @@ class AppServiceProvider extends ServiceProvider
             Config::get('shopify.api_secret'),
             Config::get('shopify.scopes'),
             str_replace('https://', '', Config::get('shopify.host')),
-            new DbSessionStorage()
+            new DbSessionStorage(),
+            ApiVersion::LATEST
         );
 
         URL::forceScheme('https');
