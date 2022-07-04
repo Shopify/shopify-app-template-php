@@ -29,7 +29,7 @@ use Shopify\Webhooks\Topics;
 
 Route::fallback(function (Request $request) {
     $shop = $request->query('shop') ? Utils::sanitizeShopDomain($request->query('shop')) : null;
-    $appInstalled = Session::where('shop', $shop)->exists();
+    $appInstalled = Session::where('shop', $shop)->where('access_token', '<>', null)->exists();
     if ($appInstalled) {
         if (env('APP_ENV') === 'production') {
             return file_get_contents(public_path('index.html'));
@@ -60,6 +60,9 @@ Route::get('/api/auth', function (Request $request) {
     if (!$request->hasCookie('shopify_top_level_oauth')) {
         return redirect("/api/auth/toplevel?shop=$shop");
     }
+
+    // Delete any previously created OAuth sessions that were not completed (don't have an access token)
+    Session::where('shop', $shop)->where('access_token', null)->delete();
 
     $installUrl = OAuth::begin(
         $shop,
