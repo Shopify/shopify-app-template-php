@@ -10,6 +10,7 @@ use App\Lib\Handlers\Gdpr\ShopRedact;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Shopify\Context;
+use Shopify\ApiVersion;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
 
@@ -49,10 +50,10 @@ class AppServiceProvider extends ServiceProvider
             $host,
             new DbSessionStorage(),
             // the following four params are needed in order to set userAgentPrefix
-            '2022-04',                  // apiVersion
-            true,                       // isEmbeddedApp, default = true
-            false,                      // isPrivateApp, default = false
-            null,                       // privateAppStorefrontAccessToken, default = null
+            ApiVersion::LATEST,       // apiVersion
+            true,                     // isEmbeddedApp, default = true
+            false,                    // isPrivateApp, default = false
+            null,                     // privateAppStorefrontAccessToken, default = null
             'PHP app template/' . $templateVersion  // userAgentPrefix
         );
 

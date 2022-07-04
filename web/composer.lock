@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f82ada44ab87ae8228cadf795d6a2b66",
+    "content-hash": "4ea4f476cbeaef90245258a779089b70",
     "packages": [
         {
             "name": "brick/math",
@@ -3318,16 +3318,16 @@
         },
         {
             "name": "shopify/shopify-api",
-            "version": "v2.0.1",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Shopify/shopify-php-api.git",
-                "reference": "0556edf274ceb83346533bd22b662d7622e58c66"
+                "url": "https://github.com/Shopify/shopify-api-php.git",
+                "reference": "78a0416b1b6a50a11c1a942e7bdc456bcd8951c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/0556edf274ceb83346533bd22b662d7622e58c66",
-                "reference": "0556edf274ceb83346533bd22b662d7622e58c66",
+                "url": "https://api.github.com/repos/Shopify/shopify-api-php/zipball/78a0416b1b6a50a11c1a942e7bdc456bcd8951c9",
+                "reference": "78a0416b1b6a50a11c1a942e7bdc456bcd8951c9",
                 "shasum": ""
             },
             "require": {
@@ -3373,10 +3373,10 @@
                 "webhook"
             ],
             "support": {
-                "issues": "https://github.com/Shopify/shopify-php-api/issues",
-                "source": "https://github.com/Shopify/shopify-php-api/tree/v2.0.1"
+                "issues": "https://github.com/Shopify/shopify-api-php/issues",
+                "source": "https://github.com/Shopify/shopify-api-php/tree/v3.0.0"
             },
-            "time": "2022-04-11T17:51:03+00:00"
+            "time": "2022-07-04T16:09:41+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
