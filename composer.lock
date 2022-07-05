@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c86ee1697fea0f6db3f902cca3bb5b65",
+    "content-hash": "134743df487196a0d0e82bf0a065f16b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3297,16 +3297,16 @@
         },
         {
             "name": "shopify/shopify-api",
-            "version": "v2.0.1",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Shopify/shopify-php-api.git",
-                "reference": "0556edf274ceb83346533bd22b662d7622e58c66"
+                "url": "https://github.com/Shopify/shopify-api-php.git",
+                "reference": "78a0416b1b6a50a11c1a942e7bdc456bcd8951c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Shopify/shopify-php-api/zipball/0556edf274ceb83346533bd22b662d7622e58c66",
-                "reference": "0556edf274ceb83346533bd22b662d7622e58c66",
+                "url": "https://api.github.com/repos/Shopify/shopify-api-php/zipball/78a0416b1b6a50a11c1a942e7bdc456bcd8951c9",
+                "reference": "78a0416b1b6a50a11c1a942e7bdc456bcd8951c9",
                 "shasum": ""
             },
             "require": {
@@ -3352,10 +3352,10 @@
                 "webhook"
             ],
             "support": {
-                "issues": "https://github.com/Shopify/shopify-php-api/issues",
-                "source": "https://github.com/Shopify/shopify-php-api/tree/v2.0.1"
+                "issues": "https://github.com/Shopify/shopify-api-php/issues",
+                "source": "https://github.com/Shopify/shopify-api-php/tree/v3.0.0"
             },
-            "time": "2022-04-11T17:51:03+00:00"
+            "time": "2022-07-04T16:09:41+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -8472,5 +8472,5 @@
         "php": "^7.4 || ^8.0 || ^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

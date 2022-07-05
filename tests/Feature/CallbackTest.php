@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
 use Shopify\Context;
+use Shopify\ApiVersion;
 
 class CallbackTest extends BaseTestCase
 {
@@ -60,7 +61,7 @@ class CallbackTest extends BaseTestCase
         Context::$SESSION_STORAGE->storeSession($offlineSession);
 
         $oauthTokenUrl = "https://test-shop.myshopify.io/admin/oauth/access_token";
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/" . ApiVersion::LATEST . "/graphql.json";
 
         $client = $this->mockClient();
         $client->expects($this->exactly(3))
@@ -125,7 +126,7 @@ class CallbackTest extends BaseTestCase
         Context::$SESSION_STORAGE->storeSession($onlineSession);
 
         $oauthTokenUrl = "https://test-shop.myshopify.io/admin/oauth/access_token";
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/unstable/graphql.json";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/" . ApiVersion::LATEST . "/graphql.json";
 
         $client = $this->mockClient();
         $client->expects($this->exactly(3))
