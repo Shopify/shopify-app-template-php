@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session;
 use Shopify\Context;
+use Shopify\ApiVersion;
 use Tests\BaseTestCase;
 
 class CallbackTest extends BaseTestCase
@@ -187,7 +188,7 @@ class CallbackTest extends BaseTestCase
     private function mockCallbackRequests($addBillingCalls = false)
     {
         $oauthTokenUrl = "https://test-shop.myshopify.io/admin/oauth/access_token";
-        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/2022-04/graphql.json";
+        $graphqlUrl = "https://test-shop.myshopify.io/admin/api/" . ApiVersion::LATEST . "/graphql.json";
 
         $expectedCalls = [
             [$this->callback(function ($request) use ($oauthTokenUrl) {
