@@ -19,6 +19,22 @@ class RootTest extends BaseTestCase
         $response->assertRedirect("/api/auth?shop=test-shop.myshopify.io");
     }
 
+    public function testReturn302IfShopHasIncompleteOAuthProcess()
+    {
+        $session = new Session(
+            "test-session-id",
+            "test-shop.myshopify.io",
+            false,
+            "test-session-state"
+        );
+
+        Context::$SESSION_STORAGE->storeSession($session);
+
+        $response = $this->get("?shop=test-shop.myshopify.io");
+        $response->assertStatus(302);
+        $response->assertRedirect("/api/auth?shop=test-shop.myshopify.io");
+    }
+
     public function testReturn200IfShopIsAlreadyInstalled()
     {
         $session = new Session(
@@ -27,6 +43,7 @@ class RootTest extends BaseTestCase
             false,
             "test-session-state"
         );
+        $session->setAccessToken("dummy-token");
 
         Context::$SESSION_STORAGE->storeSession($session);
 
@@ -43,6 +60,7 @@ class RootTest extends BaseTestCase
             false,
             "test-session-state"
         );
+        $session->setAccessToken("dummy-token");
 
         Context::$SESSION_STORAGE->storeSession($session);
 
