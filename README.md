@@ -10,30 +10,30 @@ Shopify apps are built on a variety of Shopify tools to create a great merchant 
 
 The PHP app template comes with the following out-of-the-box functionality:
 
-- OAuth: Installing the app and granting permissions
-- GraphQL Admin API: Querying or mutating Shopify admin data
-- REST Admin API: Resource classes to interact with the API
-- Shopify-specific tooling:
-  - AppBridge
-  - Polaris
-  - Webhooks
+-   OAuth: Installing the app and granting permissions
+-   GraphQL Admin API: Querying or mutating Shopify admin data
+-   REST Admin API: Resource classes to interact with the API
+-   Shopify-specific tooling:
+    -   AppBridge
+    -   Polaris
+    -   Webhooks
 
 ## Tech Stack
 
 This template combines a number of third party open source tools:
 
-- [Laravel](https://laravel.com/) builds and tests the backend.
-- [Vite](https://vitejs.dev/) builds the [React](https://reactjs.org/) frontend.
-- [React Router](https://reactrouter.com/) is used for routing. We wrap this with file-based routing.
-- [React Query](https://react-query.tanstack.com/) queries the GraphQL Admin API.
+-   [Laravel](https://laravel.com/) builds and tests the backend.
+-   [Vite](https://vitejs.dev/) builds the [React](https://reactjs.org/) frontend.
+-   [React Router](https://reactrouter.com/) is used for routing. We wrap this with file-based routing.
+-   [React Query](https://react-query.tanstack.com/) queries the Admin API.
 
 These third party tools are complemented by Shopify specific tools to ease app development:
 
-- [Shopify API library](https://github.com/Shopify/shopify-php-api) adds OAuth to the Laravel backend. This lets users install the app and grant scope permissions.
-- [App Bridge React](https://shopify.dev/tools/app-bridge/react-components) adds authentication to API requests in the frontend and renders components outside of the embedded App’s iFrame.
-- [Polaris React](https://polaris.shopify.com/) is a powerful design system and component library that helps developers build high quality, consistent experiences for Shopify merchants.
-- [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the GraphQL Admin API.
-- [File-based routing](https://github.com/Shopify/shopify-frontend-template-react/blob/main/Routes.jsx) makes creating new pages easier.
+-   [Shopify API library](https://github.com/Shopify/shopify-php-api) adds OAuth to the Laravel backend. This lets users install the app and grant scope permissions.
+-   [App Bridge React](https://shopify.dev/tools/app-bridge/react-components) adds authentication to API requests in the frontend and renders components outside of the embedded App’s iFrame.
+-   [Polaris React](https://polaris.shopify.com/) is a powerful design system and component library that helps developers build high quality, consistent experiences for Shopify merchants.
+-   [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the Admin API.
+-   [File-based routing](https://github.com/Shopify/shopify-frontend-template-react/blob/main/Routes.jsx) makes creating new pages easier.
 
 ## Getting started
 
@@ -228,8 +228,8 @@ You'll need to set up the API key and API secret for your production environment
 
 The following pages document the basic steps to host and deploy your application to a few popular cloud providers:
 
-- [fly.io](/web/docs/hosting/fly-io.md)
-- [Heroku](/web/docs/hosting/heroku.md)
+-   [fly.io](/web/docs/hosting/fly-io.md)
+-   [Heroku](/web/docs/hosting/heroku.md)
 
 ## Known issues
 
@@ -283,7 +283,7 @@ pnpm dev --tunnel-url https://tunnel-url:3000
 
 ## Developer resources
 
-- [Introduction to Shopify apps](https://shopify.dev/apps/getting-started)
-- [App authentication](https://shopify.dev/apps/auth)
-- [Shopify CLI](https://shopify.dev/apps/tools/cli)
-- [Shopify API Library documentation](https://github.com/Shopify/shopify-php-api/tree/main/docs)
+-   [Introduction to Shopify apps](https://shopify.dev/apps/getting-started)
+-   [App authentication](https://shopify.dev/apps/auth)
+-   [Shopify CLI](https://shopify.dev/apps/tools/cli)
+-   [Shopify API Library documentation](https://github.com/Shopify/shopify-php-api/tree/main/docs)

@@ -33,4 +33,17 @@ class BaseTestCase extends TestCase
         Context::$HTTP_CLIENT_FACTORY = $factory;
         return $client;
     }
+
+    protected function assertArraySubset(array $expected, array $actual)
+    {
+        foreach ($expected as $key => $value) {
+            $this->assertArrayHasKey($key, $actual);
+
+            if (is_array($value) && !empty($value)) {
+                $this->assertArraySubset($value, $actual[$key]);
+            } else {
+                $this->assertEquals($actual[$key], $value);
+            }
+        }
+    }
 }
