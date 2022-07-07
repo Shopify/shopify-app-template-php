@@ -18,7 +18,6 @@ class ProductCreatorTest extends BaseTestCase
 
     private const SHOP = "test-shop.myshopify.com";
     private const USER_ID = "42";
-    private const GRAPHQL_URL = "https://test-shop.myshopify.com/admin/api/2022-04/graphql.json";
 
     private string $sessionId;
     private Session $session;
@@ -63,6 +62,8 @@ class ProductCreatorTest extends BaseTestCase
 
     private function mockGraphqlQueries($failQuery = false)
     {
+        $graphqlUrl = "https://test-shop.myshopify.com/admin/api/" . Context::$API_VERSION . "/graphql.json";
+
         // The first query is the shop check, to validate the access token
         $requestCallbacks = [
             []
@@ -76,8 +77,8 @@ class ProductCreatorTest extends BaseTestCase
             $responseObjects[] = new Response(400, [], json_encode(["errors" => "Something went wrong"]));
         } else {
             for ($i = 0; $i < 5; $i++) {
-                $requestCallbacks[] = [$this->callback(function (Request $request) {
-                    return ($request->getUri() == self::GRAPHQL_URL &&
+                $requestCallbacks[] = [$this->callback(function (Request $request) use ($graphqlUrl) {
+                    return ($request->getUri() == $graphqlUrl &&
                         $request->getHeader("X-Shopify-Access-Token") === ["access-token"]
                     );
                 })];
