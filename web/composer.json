@@ -6,6 +6,8 @@
     "license": "UNLICENSED",
     "require": {
         "php": "^7.4 || ^8.0 || ^8.1",
+        "ext-xml": "*",
+        "ext-zip": "*",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -48,7 +50,7 @@
         ],
         "serve": [
             "Composer\\Config::disableProcessTimeout",
-            "php artisan serve --port=\"${BACKEND_PORT:-$PORT}\""
+            "php artisan serve"
         ],
         "react": "npm run watch",
         "test": "php artisan test --env=testing",
