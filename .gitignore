@@ -4,6 +4,7 @@
 /web/storage/*.key
 /web/storage/db.sqlite
 /web/vendor
+/web/composer.lock
 .env
 web/.phpunit.result.cache
 docker-compose.override.yml
