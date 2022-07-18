@@ -35,8 +35,13 @@ class RootTest extends BaseTestCase
         $response->assertRedirect("/api/auth?shop=test-shop.myshopify.io");
     }
 
-    public function testReturn200IfShopIsAlreadyInstalled()
+    /**
+     * @dataProvider provideFrameAncestors
+     */
+    public function testReturn200IfShopIsAlreadyInstalled($isEmbedded, $frameAncestors)
     {
+        Context::$IS_EMBEDDED_APP = $isEmbedded;
+
         $session = new Session(
             "test-session-id",
             "test-shop.myshopify.io",
@@ -50,6 +55,15 @@ class RootTest extends BaseTestCase
         $response = $this->get("?shop=test-shop.myshopify.io");
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'text/html; charset=UTF-8');
+        $response->assertHeader('Content-Security-Policy', "frame-ancestors $frameAncestors;");
+    }
+
+    public function provideFrameAncestors()
+    {
+        return [
+            [true, "https://test-shop.myshopify.io https://admin.shopify.com"],
+            [false, "'none'"],
+        ];
     }
 
     public function testUncaughtRequestsTriggerRouteBehaviour()
