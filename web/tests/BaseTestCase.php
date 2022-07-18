@@ -18,6 +18,7 @@ class BaseTestCase extends TestCase
         $factory->expects($this->any())
             ->method('client');
         Context::$HTTP_CLIENT_FACTORY = $factory;
+        Context::$IS_EMBEDDED_APP = true;
     }
 
     /**
