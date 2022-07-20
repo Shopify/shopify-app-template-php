@@ -147,36 +147,6 @@ pnpm run dev
 
 Open the URL generated in your console. Once you grant permission to the app, you can start development.
 
-### Testing backend code
-
-Unit tests exist for the backend. First, build the [frontend](#build) and then run them using composer:
-
-```shell
-cd web && composer test
-```
-
-### Testing frontend code
-
-Unit tests exist for the frontend. Run these using your preferred package manager:
-
-Using yarn:
-
-```shell
-cd web/frontend && yarn test
-```
-
-Using npm:
-
-```shell
-cd web/frontend && npm run test
-```
-
-Using pnpm:
-
-```shell
-cd web/frontend && pnpm run test
-```
-
 ## Deployment
 
 ### Application Storage
