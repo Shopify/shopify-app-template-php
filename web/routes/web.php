@@ -15,6 +15,7 @@ use Shopify\Clients\HttpHeaders;
 use Shopify\Clients\HttpResponse;
 use Shopify\Clients\Rest;
 use Shopify\Context;
+use Shopify\Exception\InvalidWebhookException;
 use Shopify\Utils;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
@@ -158,6 +159,9 @@ Route::post('/api/webhooks', function (Request $request) {
             Log::error("Failed to process '$topic' webhook: {$response->getErrorMessage()}");
             return response()->json(['message' => "Failed to process '$topic' webhook"], 500);
         }
+    } catch (InvalidWebhookException $e) {
+        Log::error("Got invalid webhook request for topic '$topic': {$e->getMessage()}");
+        return response()->json(['message' => "Got invalid webhook request for topic '$topic'"], 401);
     } catch (\Exception $e) {
         Log::error("Got an exception when handling '$topic' webhook: {$e->getMessage()}");
         return response()->json(['message' => "Got an exception when handling '$topic' webhook"], 500);
