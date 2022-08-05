@@ -6,6 +6,7 @@ use App\Lib\AuthRedirection;
 use App\Models\Session;
 use Closure;
 use Illuminate\Http\Request;
+use Shopify\Context;
 use Shopify\Utils;
 
 class EnsureShopifyInstalled
@@ -20,7 +21,19 @@ class EnsureShopifyInstalled
     public function handle(Request $request, Closure $next)
     {
         $shop = $request->query('shop') ? Utils::sanitizeShopDomain($request->query('shop')) : null;
-        $appInstalled = $shop && Session::where('shop', $shop)->where('access_token', '<>', null)->exists();
+
+        $appInstalled = false;
+        if ($shop) {
+            $latestSession = Session::select('session_id')
+                ->where('shop', $shop)
+                ->where('access_token', '<>', null)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($latestSession) {
+                $appInstalled = Context::$SESSION_STORAGE->loadSession($latestSession->session_id)->isValid();
+            }
+        }
 
         return $appInstalled ? $next($request) : AuthRedirection::redirect($request);
     }
