@@ -38,7 +38,7 @@ Route::fallback(function (Request $request) {
             return file_get_contents(base_path('frontend/index.html'));
         }
     } else {
-        return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)));
+        return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path());
     }
 })->middleware('shopify.installed');
 
