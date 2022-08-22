@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\ShopifyBillingException;
+use App\Lib\AuthRedirection;
 use App\Lib\EnsureBilling;
 use App\Lib\TopLevelRedirection;
 use Closure;
@@ -54,7 +55,7 @@ class EnsureShopifySession
 
         if ($session && $shop && $session->getShop() !== $shop) {
             // This request is for a different shop. Go straight to login
-            return redirect("/api/auth?shop=$shop");
+            return AuthRedirection::redirect($request);
         }
 
         if ($session && $session->isValid()) {

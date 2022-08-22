@@ -1,18 +1,17 @@
 <?php
 
 use App\Exceptions\ShopifyProductCreatorException;
+use App\Lib\AuthRedirection;
 use App\Lib\EnsureBilling;
 use App\Lib\ProductCreator;
 use App\Models\Session;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session as AuthSession;
 use Shopify\Clients\HttpHeaders;
-use Shopify\Clients\HttpResponse;
 use Shopify\Clients\Rest;
 use Shopify\Context;
 use Shopify\Exception\InvalidWebhookException;
@@ -32,50 +31,24 @@ use Shopify\Webhooks\Topics;
 */
 
 Route::fallback(function (Request $request) {
-    $shop = $request->query('shop') ? Utils::sanitizeShopDomain($request->query('shop')) : null;
-    $appInstalled = Session::where('shop', $shop)->where('access_token', '<>', null)->exists();
-    if ($appInstalled) {
+    if (Context::$IS_EMBEDDED_APP &&  $request->query("embedded", false) === "1") {
         if (env('APP_ENV') === 'production') {
             return file_get_contents(public_path('index.html'));
         } else {
             return file_get_contents(base_path('frontend/index.html'));
         }
+    } else {
+        return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path());
     }
-    return redirect("/api/auth?shop=$shop");
-});
-
-Route::get('/api/auth/toplevel', function (Request $request, Response $response) {
-    $shop = Utils::sanitizeShopDomain($request->query('shop'));
-
-    $response = new Response(view('top_level', [
-        'apiKey' => Context::$API_KEY,
-        'shop' => $shop,
-        'hostName' => Context::$HOST_NAME,
-    ]));
-
-    $response->withCookie(cookie()->forever('shopify_top_level_oauth', '', null, null, true, true, false, 'strict'));
-
-    return $response;
-});
+})->middleware('shopify.installed');
 
 Route::get('/api/auth', function (Request $request) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
-    if (!$request->hasCookie('shopify_top_level_oauth')) {
-        return redirect("/api/auth/toplevel?shop=$shop");
-    }
-
     // Delete any previously created OAuth sessions that were not completed (don't have an access token)
     Session::where('shop', $shop)->where('access_token', null)->delete();
 
-    $installUrl = OAuth::begin(
-        $shop,
-        '/api/auth/callback',
-        false,
-        ['App\Lib\CookieHandler', 'saveShopifyCookie'],
-    );
-
-    return redirect($installUrl);
+    return AuthRedirection::redirect($request);
 });
 
 Route::get('/api/auth/callback', function (Request $request) {
@@ -98,7 +71,7 @@ Route::get('/api/auth/callback', function (Request $request) {
         );
     }
 
-    $redirectUrl = "?" . http_build_query(['host' => $host, 'shop' => $shop]);
+    $redirectUrl = Utils::getEmbeddedAppUrl($host);
     if (Config::get('shopify.billing.required')) {
         list($hasPayment, $confirmationUrl) = EnsureBilling::check($session, Config::get('shopify.billing'));
 

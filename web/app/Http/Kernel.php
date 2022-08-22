@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'shopify.auth' => \App\Http\Middleware\EnsureShopifySession::class,
+        'shopify.installed' => \App\Http\Middleware\EnsureShopifyInstalled::class,
     ];
 }
