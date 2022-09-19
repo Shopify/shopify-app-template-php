@@ -193,13 +193,18 @@ composer build
 
 ## Hosting
 
-Before you host your app in a production environment, make sure to create the production app in your Partner's Dashboard.
-You'll need to set up the API key and API secret for your production environment, as per the instructions below.
+Once you're ready to set up your app in production, you can follow [our deployment documentation](https://shopify.dev/apps/deployment) to host your app on a cloud provider like [Heroku](https://www.heroku.com/) or [Fly.io](https://fly.io/).
 
-The following pages document the basic steps to host and deploy your application to a few popular cloud providers:
+**Note**: Once you reach the step for [setting up environment variables](https://shopify.dev/apps/deployment/web#step-3-set-environment-variables) in the docs, you will also need to set these variables:
 
--   [fly.io](/web/docs/hosting/fly-io.md)
--   [Heroku](/web/docs/hosting/heroku.md)
+| Variable          | Secret? | Required |     Value      | Description                                                                         |
+| ----------------- | :-----: | :------: | :------------: | ----------------------------------------------------------------------------------- |
+| `APP_KEY`         |   Yes   |   Yes    |     string     | Run `php web/artisan key:generate --show` to generate one.                          |
+| `APP_NAME`        |         |   Yes    |     string     | App name for Laravel.                                                               |
+| `APP_ENV`         |         |   Yes    | `"production"` |                                                                                     |
+| `DB_CONNECTION`   |         |   Yes    |     string     | Set this to the database you want to use, e.g. `"sqlite"`.                          |
+| `DB_DATABASE`     |         |   Yes    |     string     | Set this to the connection string to your database, e.g. `"/app/storage/db.sqlite"` |
+| `DB_FOREIGN_KEYS` |         |          |     `true`     | If your app is using foreign keys.                                                  |
 
 ## Known issues
 
