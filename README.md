@@ -193,9 +193,9 @@ composer build
 
 ## Hosting
 
-Once you're ready to set up your app in production, you can follow [our deployment documentation](https://shopify.dev/apps/deployment) to host your app on a cloud provider like [Heroku](https://www.heroku.com/) or [Fly.io](https://fly.io/).
+When you're ready to set up your app in production, you can follow [our deployment documentation](https://shopify.dev/apps/deployment/web) to host your app on a cloud provider like [Heroku](https://www.heroku.com/) or [Fly.io](https://fly.io/).
 
-**Note**: Once you reach the step for [setting up environment variables](https://shopify.dev/apps/deployment/web#step-3-set-environment-variables) in the docs, you will also need to set these variables:
+When you reach the step for [setting up environment variables](https://shopify.dev/apps/deployment/web#set-env-vars), you also need to set the following variables:
 
 | Variable          | Secret? | Required |     Value      | Description                                                                         |
 | ----------------- | :-----: | :------: | :------------: | ----------------------------------------------------------------------------------- |
