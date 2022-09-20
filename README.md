@@ -52,23 +52,31 @@ This template runs on Shopify CLI 3.0, which is a node package that can be inclu
 Using yarn:
 
 ```shell
-yarn create @shopify/app --template php
+yarn create @shopify/app
 ```
 
 Using npx:
 
 ```shell
-npm init @shopify/app@latest --template php
+npm init @shopify/app@latest
 ```
 
 Using pnpm:
 
 ```shell
-pnpm create @shopify/app@latest --template php
+pnpm create @shopify/app@latest
 ```
 
-This will clone the template and install the CLI in that project.
+The installer will then prompt you for:
+1. Your App's name? (this will become the directory name: for example my-app)
+1. Which template would you like to use? (use the arrow keys to select PHP)
 
+This will clone the template and install the CLI in a directory relative to the directory that you were in when you ran the installer. The installer also prints instructions for what to do next.
+
+```shell
+cd my-app
+```
+    
 ### Setting up your Laravel app
 
 Once the Shopify CLI clones the repo, you will be able to run commands on your app.
