@@ -6,6 +6,9 @@
 /web/vendor
 /web/composer.lock
 .env
+.env.*
+!.env.example
+!.env.testing
 web/.phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
