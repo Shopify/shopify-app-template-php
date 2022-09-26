@@ -19,7 +19,7 @@
         "@shopify/polaris": "^6.4.0",
         "axios": "^0.21",
         "graphql": "^15.5.0",
-        "laravel-mix": "^6.0.19",
+        "laravel-mix": "^6.0.49",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "react": "^16.14.0",
