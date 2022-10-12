@@ -68,7 +68,7 @@ pnpm create @shopify/app@latest --template php
 ```
 
 This will clone the template and install the CLI in that project.
-    
+
 ### Setting up your Laravel app
 
 Once the Shopify CLI clones the repo, you will be able to run commands on your app.
