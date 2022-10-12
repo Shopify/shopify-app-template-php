@@ -55,7 +55,7 @@ Using yarn:
 yarn create @shopify/app --template php
 ```
 
-Using npx (yes, the extra -- is necessary):
+Using npx:
 
 ```shell
 npm init @shopify/app@latest -- --template php
@@ -67,17 +67,7 @@ Using pnpm:
 pnpm create @shopify/app@latest --template php
 ```
 
-The installer will then prompt you for:
-1. Your App's name? (this will become the directory name: for example my-app)
-
-You can also run the install commands without the --template argument and you will be prompted with:
-1. Which template would you like to use? (use the arrow keys to select PHP)
-
-This will clone the template and install the CLI in a directory relative to the directory that you were in when you ran the installer. The installer also prints instructions for what to do next.
-
-```shell
-cd my-app
-```
+This will clone the template and install the CLI in that project.
     
 ### Setting up your Laravel app
 
