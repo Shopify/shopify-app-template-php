@@ -34,19 +34,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $host = str_replace('https://', '', env('HOST', 'not_defined'));
+        $host = env('HOST', null);
 
         Context::initialize(
             env('SHOPIFY_API_KEY', 'not_defined'),
             env('SHOPIFY_API_SECRET', 'not_defined'),
             env('SCOPES', 'not_defined'),
-            $host,
+            $host ?: 'not_defined',
             new DbSessionStorage(),
             ApiVersion::LATEST,
         );
 
-        URL::forceRootUrl("https://$host");
-        URL::forceScheme('https');
+        URL::forceRootUrl($host);
+        if (parse_url($host, PHP_URL_SCHEME) === 'https') {
+            URL::forceScheme('https');
+        }
 
         Registry::addHandler(Topics::APP_UNINSTALLED, new AppUninstalled());
 

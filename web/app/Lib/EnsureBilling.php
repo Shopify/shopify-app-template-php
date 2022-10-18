@@ -110,10 +110,11 @@ class EnsureBilling
      */
     private static function requestPayment(Session $session, array $config)
     {
+        $hostScheme = Context::$HOST_SCHEME;
         $hostName = Context::$HOST_NAME;
         $shop = $session->getShop();
         $host = base64_encode("$shop/admin");
-        $returnUrl = "https://$hostName?shop={$shop}&host=$host";
+        $returnUrl = "$hostScheme://$hostName?shop={$shop}&host=$host";
 
         if (self::isRecurring($config)) {
             $data = self::requestRecurringPayment($session, $config, $returnUrl);
