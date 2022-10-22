@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $host = str_replace('https://', '', env('HOST', 'not_defined'));
 
+        $customDomain = env('SHOP_CUSTOM_DOMAIN', null);
         Context::initialize(
             env('SHOPIFY_API_KEY', 'not_defined'),
             env('SHOPIFY_API_SECRET', 'not_defined'),
@@ -43,6 +44,12 @@ class AppServiceProvider extends ServiceProvider
             $host,
             new DbSessionStorage(),
             ApiVersion::LATEST,
+            true,
+            false,
+            null,
+            '',
+            null,
+            (array)$customDomain,
         );
 
         URL::forceRootUrl("https://$host");
