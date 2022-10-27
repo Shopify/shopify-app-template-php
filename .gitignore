@@ -15,8 +15,6 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-package-lock.json
-yarn.lock
 
 **/node_modules
 

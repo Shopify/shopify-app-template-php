@@ -25,6 +25,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Find any lock file
+        run: if test -f ../yarn.lock || test -f ../pnpm-lock.yaml || test -f ../package-lock.json; then echo "Please don't commit lock files" && exit 1; fi
+
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
