@@ -274,7 +274,7 @@ Out of the logs produced by cloudflare you will notice a https URL where the dom
 2022-11-11T19:57:58Z INF +--------------------------------------------------------------------------------------------+
 ```
 
-Below you would replace `randomly-generated-hostname` with what you have copied from the terminal. In a different terminal window, navigate to your app's root and with the URL from above you would call:
+In a different terminal window, navigate to your app's root and run one of the following commands (replacing `randomly-generated-hostname` with the Cloudflare tunnel URL copied from the output of `cloudflared` command): 
 
 ```shell
 # Using yarn
