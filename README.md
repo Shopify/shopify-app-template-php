@@ -265,7 +265,7 @@ To do that, you can [install the `cloudflared` CLI tool](https://developers.clou
 # Note that you can also use a different port
 cloudflared tunnel --url http://localhost:3000
 ```
-Out of the logs produced by cloudflare you will notice a https URL where the domain ends with `trycloudflare.com`. This is your tunnel URL. You need to copy this URL as you will need it in the next step.
+In the output produced by `cloudflared tunnel` command, you will notice a https URL where the domain ends with `trycloudflare.com`. This is your tunnel URL. You need to copy this URL as you will need it in the next step.
 ```shell
 2022-11-11T19:57:55Z INF Requesting new quick Tunnel on trycloudflare.com...
 2022-11-11T19:57:58Z INF +--------------------------------------------------------------------------------------------+
