@@ -15,6 +15,7 @@ class EnsureBilling
     public const INTERVAL_ONE_TIME = "ONE_TIME";
     public const INTERVAL_EVERY_30_DAYS = "EVERY_30_DAYS";
     public const INTERVAL_ANNUAL = "ANNUAL";
+    public const TRIAL_DAYS = 7;
 
     private static $RECURRING_INTERVALS = [
         self::INTERVAL_EVERY_30_DAYS, self::INTERVAL_ANNUAL
@@ -148,6 +149,7 @@ class EnsureBilling
                     ],
                     "returnUrl" => $returnUrl,
                     "test" => !self::isProd(),
+                    "trialDays": self::TRIAL_DAYS,                    
                 ],
             ]
         );
@@ -164,6 +166,7 @@ class EnsureBilling
                     "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
                     "returnUrl" => $returnUrl,
                     "test" => !self::isProd(),
+                    "trialDays": self::TRIAL_DAYS,
                 ],
             ]
         );
@@ -229,12 +232,14 @@ class EnsureBilling
         $lineItems: [AppSubscriptionLineItemInput!]!
         $returnUrl: URL!
         $test: Boolean
+        $trialDays: Int
     ) {
         appSubscriptionCreate(
             name: $name
             lineItems: $lineItems
             returnUrl: $returnUrl
             test: $test
+            trialDays: $trialDays
         ) {
             confirmationUrl
             userErrors {
@@ -250,12 +255,14 @@ class EnsureBilling
         $price: MoneyInput!
         $returnUrl: URL!
         $test: Boolean
+        $trialDays: Int
     ) {
         appPurchaseOneTimeCreate(
             name: $name
             price: $price
             returnUrl: $returnUrl
             test: $test
+            trialDays: $trialDays
         ) {
             confirmationUrl
             userErrors {
