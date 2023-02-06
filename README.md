@@ -40,7 +40,7 @@ These third party tools are complemented by Shopify specific tools to ease app d
 ### Requirements
 
 1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
-1. You must [create a development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) if you don’t have one.
+1. You must create a store for testing if you don't have one, either a [development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) or a [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store).
 1. You must have [PHP](https://www.php.net/) installed.
 1. You must have [Composer](https://getcomposer.org/) installed.
 1. You must have [Node.js](https://nodejs.org/) installed.
