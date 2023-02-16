@@ -13,7 +13,7 @@ class CspHeader
     /**
      * Ensures that the request is setting the appropriate CSP frame-ancestor directive.
      *
-     * See https://shopify.dev/apps/store/security/iframe-protection for more information
+     * See https://shopify.dev/docs/apps/store/security/iframe-protection for more information
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
