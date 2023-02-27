@@ -14,7 +14,7 @@ return [
     | If no payment is found, it starts off the process and sends the merchant to a confirmation URL so that they can
     | approve the purchase.
     |
-    | Learn more about billing in our documentation: https://shopify.dev/apps/billing
+    | Learn more about billing in our documentation: https://shopify.dev/docs/apps/billing
     |
     */
     "billing" => [
