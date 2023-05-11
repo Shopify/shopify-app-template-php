@@ -2,10 +2,13 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "UNLICENSED",
     "require": {
-        "php": "^7.4 || ^8.0 || ^8.1",
+        "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
         "ext-xml": "*",
         "ext-zip": "*",
         "doctrine/dbal": "^3.1",
@@ -14,7 +17,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "shopify/shopify-api": "^4.0",
+        "shopify/shopify-api": "^5.0",
         "squizlabs/php_codesniffer": "^3.6"
     },
     "require-dev": {
