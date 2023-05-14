@@ -11,7 +11,7 @@ use Shopify\Webhooks\Handler;
  * Store owners can request that data is deleted on behalf of a customer. When
  * this happens, Shopify invokes this webhook.
  *
- * https://shopify.dev/apps/webhooks/configuration/mandatory-webhooks#customers-redact
+ * https://shopify.dev/docs/apps/webhooks/configuration/mandatory-webhooks#customers-redact
  */
 class CustomersRedact implements Handler
 {
