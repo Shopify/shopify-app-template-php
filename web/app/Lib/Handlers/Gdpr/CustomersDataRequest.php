@@ -11,7 +11,7 @@ use Shopify\Webhooks\Handler;
  * Customers can request their data from a store owner. When this happens,
  * Shopify invokes this webhook.
  *
- * https://shopify.dev/apps/webhooks/configuration/mandatory-webhooks#customers-data_request
+ * https://shopify.dev/docs/apps/webhooks/configuration/mandatory-webhooks#customers-data_request
  */
 class CustomersDataRequest implements Handler
 {

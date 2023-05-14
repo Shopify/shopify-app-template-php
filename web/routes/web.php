@@ -28,6 +28,9 @@ use Shopify\Webhooks\Topics;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
+| If you are adding routes outside of the /api path, remember to also add a
+| proxy rule for them in web/frontend/vite.config.js
+|
 */
 
 Route::fallback(function (Request $request) {

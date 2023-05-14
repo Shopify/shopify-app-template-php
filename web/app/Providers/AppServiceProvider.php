@@ -63,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
          * in the handlers being registered below.
          *
          * More details can be found on shopify.dev:
-         * https://shopify.dev/apps/webhooks/configuration/mandatory-webhooks
+         * https://shopify.dev/docs/apps/webhooks/configuration/mandatory-webhooks
          *
          * Note that you'll only receive these webhooks if your app has the relevant scopes as detailed in the docs.
          */

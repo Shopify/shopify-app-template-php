@@ -11,7 +11,7 @@ use Shopify\Webhooks\Handler;
  * 48 hours after a store owner uninstalls your app, Shopify invokes this
  * webhook.
  *
- * https://shopify.dev/apps/webhooks/configuration/mandatory-webhooks#shop-redact
+ * https://shopify.dev/docs/apps/webhooks/configuration/mandatory-webhooks#shop-redact
  */
 class ShopRedact implements Handler
 {
