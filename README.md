@@ -160,7 +160,7 @@ Once you decide which database to use, you can update your Laravel app's `DB_*` 
 
 ### Build
 
-The frontend is a single page React app. It requires the `SHOPIFY_API_KEY` environment variable, which you can find on the page for your app in your partners dashboard.
+The frontend is a single page React app. It requires the `SHOPIFY_APP_API_KEY` environment variable, which you can find on the page for your app in your partners dashboard.
 The CLI will set up the necessary environment variables for the build if you run its `build` command from your app's root:
 
 Using yarn:
@@ -186,7 +186,7 @@ If you're manually building (for instance when deploying the `web` folder to pro
 
 ```shell
 cd web/frontend
-SHOPIFY_API_KEY=REPLACE_ME yarn build
+SHOPIFY_APP_API_KEY=REPLACE_ME yarn build
 cd ..
 composer build
 ```
@@ -218,8 +218,8 @@ We fixed this issue with v3.4.0 of the CLI, so after updating it, you can make t
 1. Change the definition `hmrConfig` object to be:
 
     ```js
-    const host = process.env.HOST
-        ? process.env.HOST.replace(/https?:\/\//, "")
+    const host = process.env.SHOPIFY_APP_URL
+        ? process.env.SHOPIFY_APP_URL.replace(/https?:\/\//, "")
         : "localhost";
 
     let hmrConfig;
@@ -239,6 +239,12 @@ We fixed this issue with v3.4.0 of the CLI, so after updating it, you can make t
         };
     }
     ```
+
+    <!-- TODO Update CLI version here -->
+
+    > **Note**: For apps created using Shopify CLI vX.Y.Z or earlier, some of the environment variables above use different names.
+    >
+    > For more information, refer to [Shopify CLI app structure](https://shopify.dev/docs/apps/tools/cli/structure#web-component-conventions).
 
 1. Change the `server.host` setting in the configs to `"localhost"`:
 
@@ -265,7 +271,9 @@ To do that, you can [install the `cloudflared` CLI tool](https://developers.clou
 # Note that you can also use a different port
 cloudflared tunnel --url http://localhost:3000
 ```
+
 In the output produced by `cloudflared tunnel` command, you will notice a https URL where the domain ends with `trycloudflare.com`. This is your tunnel URL. You need to copy this URL as you will need it in the next step.
+
 ```shell
 2022-11-11T19:57:55Z INF Requesting new quick Tunnel on trycloudflare.com...
 2022-11-11T19:57:58Z INF +--------------------------------------------------------------------------------------------+

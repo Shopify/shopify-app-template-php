@@ -34,22 +34,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $host = str_replace('https://', '', env('HOST', 'not_defined'));
+        $apiKey = env('SHOPIFY_APP_API_KEY', env('SHOPIFY_API_KEY', 'not_defined'));
+        $apiSecretKey = env('SHOPIFY_APP_API_SECRET', env('SHOPIFY_API_SECRET', 'not_defined'));
+        $scopes = env('SHOPIFY_APP_SCOPES', env('SCOPES', 'not_defined'));
+        $host = env('SHOPIFY_APP_URL', env('HOST', 'not_defined'));
 
         $customDomain = env('SHOP_CUSTOM_DOMAIN', null);
         Context::initialize(
-            env('SHOPIFY_API_KEY', 'not_defined'),
-            env('SHOPIFY_API_SECRET', 'not_defined'),
-            env('SCOPES', 'not_defined'),
-            $host,
-            new DbSessionStorage(),
-            ApiVersion::LATEST,
-            true,
-            false,
-            null,
-            '',
-            null,
-            (array)$customDomain,
+            apiKey: $apiKey,
+            apiSecretKey: $apiSecretKey,
+            scopes: $scopes,
+            hostName: str_replace('https://', '', $host),
+            sessionStorage: new DbSessionStorage(),
+            apiVersion: ApiVersion::LATEST,
+            customShopDomains: (array)$customDomain,
         );
 
         URL::forceRootUrl("https://$host");
