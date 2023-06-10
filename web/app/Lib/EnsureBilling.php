@@ -17,7 +17,7 @@ class EnsureBilling
     public const INTERVAL_ANNUAL = "ANNUAL";
 
     private static $RECURRING_INTERVALS = [
-        self::INTERVAL_EVERY_30_DAYS, self::INTERVAL_ANNUAL
+        self::INTERVAL_EVERY_30_DAYS, self::INTERVAL_ANNUAL, self::INTERVAL_ONE_TIME
     ];
 
     /**
