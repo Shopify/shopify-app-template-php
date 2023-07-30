@@ -148,7 +148,7 @@ class EnsureBilling
                     ],
                     "returnUrl" => $returnUrl,
                     "test" => !self::isProd(),
-                    "trialDays": $config["trialDays"],                    
+                    "trialDays" => $config["trialDays"],                    
                 ],
             ]
         );
