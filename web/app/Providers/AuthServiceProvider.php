@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Lib\ShopifyGuard;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::extend('shopify', function (Application $app, string $name, array $config) {
+            return new ShopifyGuard(Auth::createUserProvider($config['provider']));
+        });
     }
 }
