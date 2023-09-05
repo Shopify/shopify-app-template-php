@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase
      * Disables Shopify middleware and generates a mock Bearer token to successfully
      * authenticate against Shopify for testing purposes.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param \Illuminate\Contracts\Auth\Authenticatable $session
      * @param string|null $guard
      *
      * @return self
