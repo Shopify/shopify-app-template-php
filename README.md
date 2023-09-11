@@ -120,10 +120,16 @@ These are the typical steps needed to set up a Laravel app once it's cloned:
     php artisan migrate
     ```
 
+1. Access the frontend folder and install packages using yarn, npm, or pnpm:
+
+    ```shell
+    cd web
+    ```
+
 And your Laravel app is ready to run! You can now switch back to your app's root folder to continue:
 
 ```shell
-cd ..
+cd ../..
 ```
 
 ### Local Development
