@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Lib\Handlers\Gdpr;
+namespace App\Lib\Handlers\Privacy;
 
 use Illuminate\Support\Facades\Log;
 use Shopify\Webhooks\Handler;
 
 /**
  * Customers can request their data from a store owner. When this happens,
- * Shopify invokes this webhook.
+ * Shopify invokes this privacy webhook.
  *
  * https://shopify.dev/docs/apps/webhooks/configuration/mandatory-webhooks#customers-data_request
  */
@@ -17,7 +17,7 @@ class CustomersDataRequest implements Handler
 {
     public function handle(string $topic, string $shop, array $body): void
     {
-        Log::debug("Handling GDPR customer data request for $shop");
+        Log::debug("Handling customer data request for $shop");
         // Payload has the following shape:
         // {
         //   "shop_id": 954889,

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Lib\Handlers\Gdpr;
+namespace App\Lib\Handlers\Privacy;
 
 use Illuminate\Support\Facades\Log;
 use Shopify\Webhooks\Handler;
 
 /**
  * Store owners can request that data is deleted on behalf of a customer. When
- * this happens, Shopify invokes this webhook.
+ * this happens, Shopify invokes this privacy webhook.
  *
  * https://shopify.dev/docs/apps/webhooks/configuration/mandatory-webhooks#customers-redact
  */
@@ -17,7 +17,7 @@ class CustomersRedact implements Handler
 {
     public function handle(string $topic, string $shop, array $body): void
     {
-        Log::debug("Handling GDPR customer redaction request for $shop");
+        Log::debug("Handling customer redaction request for $shop");
         // Payload has the following shape:
         // {
         //   "shop_id": 954889,
