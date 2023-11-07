@@ -58,8 +58,8 @@ class AppServiceProvider extends ServiceProvider
         Registry::addHandler(Topics::APP_UNINSTALLED, new AppUninstalled());
 
         /*
-         * This sets up the mandatory privacy webhooks. You’ll need to fill in the endpoint to be used by your app in the
-         * “Mandatory privacy webhooks” section in the “App setup” tab, and customize the code when you store customer data
+         * This sets up the mandatory privacy webhooks. You’ll need to fill in the endpoint to be used by your app in
+         * the “Privacy webhooks” section in the “App setup” tab, and customize the code when you store customer data
          * in the handlers being registered below.
          *
          * More details can be found on shopify.dev:
