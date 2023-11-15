@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use App\Lib\DbSessionStorage;
 use App\Lib\Handlers\AppUninstalled;
-use App\Lib\Handlers\Gdpr\CustomersDataRequest;
-use App\Lib\Handlers\Gdpr\CustomersRedact;
-use App\Lib\Handlers\Gdpr\ShopRedact;
+use App\Lib\Handlers\Privacy\CustomersDataRequest;
+use App\Lib\Handlers\Privacy\CustomersRedact;
+use App\Lib\Handlers\Privacy\ShopRedact;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Shopify\Context;
@@ -58,8 +58,8 @@ class AppServiceProvider extends ServiceProvider
         Registry::addHandler(Topics::APP_UNINSTALLED, new AppUninstalled());
 
         /*
-         * This sets up the mandatory GDPR webhooks. You’ll need to fill in the endpoint to be used by your app in the
-         * “GDPR mandatory webhooks” section in the “App setup” tab, and customize the code when you store customer data
+         * This sets up the mandatory privacy webhooks. You’ll need to fill in the endpoint to be used by your app in
+         * the “Privacy webhooks” section in the “App setup” tab, and customize the code when you store customer data
          * in the handlers being registered below.
          *
          * More details can be found on shopify.dev:
