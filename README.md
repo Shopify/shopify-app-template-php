@@ -158,7 +158,7 @@ Open the URL generated in your console. Once you grant permission to the app, yo
 
 ### Application Storage
 
-This template uses [Laravel's Eloquent framework](https://laravel.com/docs/9.x/eloquent) to store Shopify session data.
+This template uses [Laravel's Eloquent framework](https://laravel.com/docs/10.x/eloquent) to store Shopify session data.
 It provides migrations to create the necessary tables in your database, and it stores and loads session data from them.
 
 The database that works best for you depends on the data your app needs and how it is queried.
