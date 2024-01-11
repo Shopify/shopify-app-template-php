@@ -40,9 +40,11 @@ Route::fallback(function (Request $request) {
         } else {
             return file_get_contents(base_path('frontend/index.html'));
         }
-    } else {
-        return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path());
     }
+    if ($request->query("host") === null) {
+        return redirect('/api/auth?shop=' . $request->query('shop'));
+    }
+    return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path());
 })->middleware('shopify.installed');
 
 Route::get('/api/auth', function (Request $request) {
