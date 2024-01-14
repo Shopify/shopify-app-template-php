@@ -148,6 +148,7 @@ class EnsureBilling
                     ],
                     "returnUrl" => $returnUrl,
                     "test" => !self::isProd(),
+                    "trialDays" => $config["trialDays"],                    
                 ],
             ]
         );
@@ -164,6 +165,7 @@ class EnsureBilling
                     "price" => ["amount" => $config["amount"], "currencyCode" => $config["currencyCode"]],
                     "returnUrl" => $returnUrl,
                     "test" => !self::isProd(),
+                    "trialDays" => $config["trialDays"],
                 ],
             ]
         );
@@ -229,12 +231,14 @@ class EnsureBilling
         $lineItems: [AppSubscriptionLineItemInput!]!
         $returnUrl: URL!
         $test: Boolean
+        $trialDays: Int
     ) {
         appSubscriptionCreate(
             name: $name
             lineItems: $lineItems
             returnUrl: $returnUrl
             test: $test
+            trialDays: $trialDays
         ) {
             confirmationUrl
             userErrors {
@@ -250,12 +254,14 @@ class EnsureBilling
         $price: MoneyInput!
         $returnUrl: URL!
         $test: Boolean
+        $trialDays: Int
     ) {
         appPurchaseOneTimeCreate(
             name: $name
             price: $price
             returnUrl: $returnUrl
             test: $test
+            trialDays: $trialDays
         ) {
             confirmationUrl
             userErrors {
