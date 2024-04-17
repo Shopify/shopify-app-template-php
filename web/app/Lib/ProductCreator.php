@@ -7,6 +7,7 @@ namespace App\Lib;
 use App\Exceptions\ShopifyProductCreatorException;
 use Shopify\Auth\Session;
 use Shopify\Clients\Graphql;
+use Shopify\Clients\HttpResponse;
 
 class ProductCreator
 {
@@ -31,13 +32,15 @@ class ProductCreator
                     "variables" => [
                         "input" => [
                             "title" => self::randomTitle(),
-                            "variants" => [["price" => self::randomPrice()]],
                         ]
                     ]
                 ],
             );
 
-            if ($response->getStatusCode() !== 200) {
+
+            $body = HttpResponse::fromResponse($response)->getDecodedBody();
+
+            if ($response->getStatusCode() !== 200 || isset($body["errors"])) {
                 throw new ShopifyProductCreatorException($response->getBody()->__toString(), $response);
             }
         }
