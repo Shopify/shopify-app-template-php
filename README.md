@@ -55,6 +55,7 @@ These third party tools are complemented by Shopify specific tools to ease app d
 ### Installing the template
 
 This template runs on Shopify CLI 3.0, which is a node package that can be included in projects. You can install it using your preferred Node.js package manager:
+Note: If you facing issue with @shopify/app@latest try with @shopify/app@3.46.2
 
 Using yarn:
 
