@@ -11,7 +11,7 @@
         "php": "^8.0",
         "ext-xml": "*",
         "ext-zip": "*",
-        "doctrine/dbal": "^3.1",
+        "doctrine/dbal": "^4.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
