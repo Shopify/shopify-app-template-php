@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
             env('SCOPES', 'not_defined'),
             $host,
             new DbSessionStorage(),
-            ApiVersion::LATEST,
+            ApiVersion::OCTOBER_2025,
             true,
             false,
             null,
