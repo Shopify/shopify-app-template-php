@@ -62,7 +62,7 @@ Using yarn:
 yarn create @shopify/app --template php
 ```
 
-Using npx:
+Using npm:
 
 ```shell
 npm init @shopify/app@latest -- --template php
