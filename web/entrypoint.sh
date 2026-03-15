@@ -10,10 +10,8 @@ cd /app
 echo "Running database migrations..."
 php artisan migrate --force
 
-echo "Starting nginx server..."
-openrc
-touch /run/openrc/softlevel
-rc-service nginx start
-
 echo "Starting PHP server..."
-php-fpm
+php-fpm &
+
+echo "Starting nginx server..."
+nginx -g 'daemon off;'

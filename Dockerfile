@@ -25,4 +25,4 @@ RUN chown www-data:www-data /app/storage/db.sqlite
 RUN cd frontend && npm install && npm run build
 RUN composer build
 
-ENTRYPOINT [ "/app/entrypoint.sh" ]
+CMD [ "/app/entrypoint.sh" ]
