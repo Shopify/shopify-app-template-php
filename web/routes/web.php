@@ -55,12 +55,21 @@ Route::get('/api/auth', function (Request $request) {
 });
 
 Route::get('/api/auth/callback', function (Request $request) {
-    $session = OAuth::callback(
-        $request->cookie(),
-        $request->query(),
-        ['App\Lib\CookieHandler', 'saveShopifyCookie'],
-    );
-
+    try {
+        $cookies = $request->cookie();
+        if ($request->cookie() == null) {
+            $cookies = $_COOKIE;
+        }
+        $session = OAuth::callback(
+            $cookies,
+            $request->query(),
+            ['App\Lib\CookieHandler', 'saveShopifyCookie'],
+        );
+    } catch (Exception $e) {
+        Log::warning('Failed to authenticate: ' . $e->getMessage());
+        return redirect('/api/auth?shop=' . $request->query('shop'));
+    }
+    
     $host = $request->query('host');
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
